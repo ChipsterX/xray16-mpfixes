@@ -1,0 +1,51 @@
+function start_add_spawn()
+	spawn_sniper_one() 
+end 
+
+function spawn_sniper_one() 
+	local x= 111.75521087646 
+	local y= 0.9362425804138 
+	local z= 185.2212677022 
+	local level_vertex= 1158851 
+	local game_vertex_id= 316 
+	alife():create("pri_b305_strelok",vector():set(x,y,z),level_vertex,game_vertex_id)  
+end 
+
+function save_variable(variable_name, value) 
+	xr_logic.pstor_store(db.actor, variable_name, value) 
+end 
+function load_variable(variable_name, value_if_not_found) 
+	return xr_logic.pstor_retrieve(db.actor, variable_name, value_if_not_found) 
+end
+
+function no_gay_spawn()
+	if load_variable("spawn_sniper",false)==false then 
+		start_add_spawn() 
+		save_variable("spawn_sniper",true) 
+	end
+end
+
+function gay_spawn()
+		--while not alife() do
+			--msg("warning: alife not avail")
+		--end
+		--if alife() then
+			--spawn_sniper_one()
+		--end
+	local hud = get_hud()
+	--local custom_static = hud:GetCustomStatic("can_use_weapon_now")
+	--if custom_static == nil then
+		hud:AddCustomStatic("can_use_weapon_now", true)
+		hud:GetCustomStatic("can_use_weapon_now"):wnd():TextControl():SetTextST("POSHLI VSE NAHUY")
+	--end
+	--surge_manager.start_surge()
+end
+
+function gay_test()
+	local console = get_console()
+	--if (alife() ~= nil) then
+		--console:execute	("disconnect")
+	--end
+	--device():pause(false)
+	console:execute("start server(all/single/alife/new) client(localhost)")
+end
