@@ -98,7 +98,7 @@ CMapLocation* CMapManager::AddMapLocation(const shared_str& spot_type, u16 id)
     CMapLocation* l = new CMapLocation(spot_type.c_str(), id);
     Locations().push_back(SLocationKey(spot_type, id));
     Locations().back().location = l;
-    if (IsGameTypeSingle() && g_actor)
+    if (/*IsGameTypeSingle() && */g_actor) //---m4d_map
         Actor()->callback(GameObject::eMapLocationAdded)(spot_type.c_str(), id);
 
     return l;
@@ -132,7 +132,7 @@ void CMapManager::RemoveMapLocation(const shared_str& spot_type, u16 id)
     auto it = std::find_if(Locations().begin(), Locations().end(), key);
     if (it != Locations().end())
     {
-        if (IsGameTypeSingle())
+       // if (IsGameTypeSingle()) //---m4d_map ???
             Level().GameTaskManager().MapLocationRelcase((*it).location);
 
         Destroy((*it).location);
@@ -146,7 +146,7 @@ void CMapManager::RemoveMapLocationByObjectID(u16 id) // call on destroy object
     auto it = std::find_if(Locations().begin(), Locations().end(), key);
     while (it != Locations().end())
     {
-        if (IsGameTypeSingle())
+       // if (IsGameTypeSingle()) //---m4d_map ???
             Level().GameTaskManager().MapLocationRelcase((*it).location);
 
         Destroy((*it).location);
@@ -163,7 +163,7 @@ void CMapManager::RemoveMapLocation(CMapLocation* ml)
     auto it = std::find_if(Locations().begin(), Locations().end(), key);
     if (it != Locations().end())
     {
-        if (IsGameTypeSingle())
+       // if (IsGameTypeSingle())  //---m4d_map ???
             Level().GameTaskManager().MapLocationRelcase((*it).location);
 
         Destroy((*it).location);
@@ -232,7 +232,7 @@ void CMapManager::Update()
 
     while ((!Locations().empty()) && (!Locations().back().actual))
     {
-        if (IsGameTypeSingle())
+        //if (IsGameTypeSingle()) //---m4d_map ???
             Level().GameTaskManager().MapLocationRelcase(Locations().back().location);
 
         Destroy(Locations().back().location);

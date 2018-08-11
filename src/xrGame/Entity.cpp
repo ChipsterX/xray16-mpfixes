@@ -205,6 +205,7 @@ BOOL CEntity::net_Spawn(CSE_Abstract* DC)
         }
     }
 
+    //-----m4d_ALIFE SPAWN (и вообще надо глянуть этот класс)
     if (g_Alive() && IsGameTypeSingle())
     {
         m_registered_member = true;

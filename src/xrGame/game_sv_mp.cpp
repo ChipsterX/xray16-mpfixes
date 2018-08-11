@@ -22,6 +22,16 @@
 #include "xrNetServer/NET_Messages.h"
 #include "xrCore/xr_token.h"
 
+//---------------------m4d_alife
+#include "alife_simulator.h"
+#include "alife_object_registry.h"
+#include "alife_graph_registry.h"
+#include "alife_time_manager.h"
+#include "ui/UILoadingScreen.h"
+#include "xrEngine/x_ray.h"
+#include "Common/object_broker.h"
+#include "gamepersistent.h"
+
 #include "game_sv_mp_vote_flags.h"
 #include "player_name_modifyer.h"
 
@@ -61,13 +71,15 @@ game_sv_mp::game_sv_mp()
     round_end_reason = eRoundEnd_Force; // unknown
     m_async_stats_request_time = 0;
     round_statistics_dump_fn[0] = 0;
+    //------------------------------------------------------
+    //----m4d_alife
+    m_alife_simulator = NULL;
 }
 
-game_sv_mp::~game_sv_mp() { xr_delete(m_strWeaponsData); }
+game_sv_mp::~game_sv_mp() { xr_delete(m_strWeaponsData); delete_data(m_alife_simulator); } //---m4d_alife
 void game_sv_mp::Update()
 {
     inherited::Update();
-
     // remove corpses if their number exceed limit
     for (u32 i = 0; i < m_CorpseList.size();)
     {
@@ -464,6 +476,10 @@ void game_sv_mp::Create(shared_str& options)
 {
     SetVotingActive(false);
     inherited::Create(options);
+    //----m4d_alife
+    if (strstr(*options, "/alife"))
+        m_alife_simulator = new CALifeSimulator(&server(), &options);
+    //switch_Phase(GAME_PHASE_INPROGRESS);
     //-------------------------------------------------------------------
     if (!g_bConsoleCommandsCreated)
     {
@@ -479,6 +495,7 @@ void game_sv_mp::Create(shared_str& options)
     {
         g_sv_mp_save_proxy_screenshots = TRUE;
     }
+    //------------------------------------------------------------------
 };
 
 u8 game_sv_mp::SpectatorModes_Pack()
@@ -513,6 +530,13 @@ void game_sv_mp::net_Export_State(NET_Packet& P, ClientID id_to)
 
 void game_sv_mp::RespawnPlayer(ClientID id_who, bool NoSpectator)
 {
+    //----m4d_ai_test
+    if (ai().get_alife())
+    {
+        luabind::functor<void> funct;
+        R_ASSERT(GEnv.ScriptEngine->functor("sniper_add.gay_spawn", funct));
+        funct();
+    }
     //------------------------------------------------------------
 
     xrClientData* xrCData = m_server->ID_to_client(id_who);
@@ -639,6 +663,7 @@ void game_sv_mp::AllowDeadBodyRemove(ClientID id, u16 GameID)
 };
 
 void game_sv_mp::OnPlayerConnect(ClientID id_who) { inherited::OnPlayerConnect(id_who); }
+//ИГРОК ДИСКОНЕКТИТСЯ m4d
 void game_sv_mp::OnPlayerDisconnect(ClientID id_who, LPSTR Name, u16 GameID)
 {
     //---------------------------------------------------
@@ -1547,15 +1572,15 @@ void game_sv_mp::OnPlayerGameMenu(NET_Packet& P, ClientID sender)
     u8 SubEvent = P.r_u8();
     switch (SubEvent)
     {
-    case PLAYER_SELECT_SPECTATOR: { OnPlayerSelectSpectator(P, sender);
-    }
-    break;
-    case PLAYER_CHANGE_TEAM: { OnPlayerSelectTeam(P, sender);
-    }
-    break;
-    case PLAYER_CHANGE_SKIN: { OnPlayerSelectSkin(P, sender);
-    }
-    break;
+        case PLAYER_SELECT_SPECTATOR: { OnPlayerSelectSpectator(P, sender);
+        }
+        break;
+        case PLAYER_CHANGE_TEAM: { OnPlayerSelectTeam(P, sender);
+        }
+        break;
+        case PLAYER_CHANGE_SKIN: { OnPlayerSelectSkin(P, sender);
+        }
+        break;
     }
 }
 void game_sv_mp::OnPlayerSelectSpectator(NET_Packet& P, ClientID sender)
@@ -1563,10 +1588,14 @@ void game_sv_mp::OnPlayerSelectSpectator(NET_Packet& P, ClientID sender)
     xrClientData* pClient = (xrClientData*)m_server->ID_to_client(sender);
 
     if (!pClient || !pClient->net_Ready)
+    {
         return;
+    }
     game_PlayerState* ps = pClient->ps;
     if (!ps)
+    {
         return;
+    }
 
     KillPlayer(sender, ps->GameID);
     ps->setFlag(GAME_PLAYER_FLAG_SPECTATOR);
@@ -1724,25 +1753,25 @@ void game_sv_mp::UpdatePlayersMoney()
     tmp_functor.m_owner = this;
     m_server->ForEachClientDoSender(tmp_functor);
 };
-/*
-bool	game_sv_mp::GetTeamItem_ByID		(WeaponDataStruct** pRes, TEAM_WPN_LIST* pWpnList, u16 ItemID)
-{
-    if (!pWpnList) return false;
-    TEAM_WPN_LIST_it pWpnI	= std::find(pWpnList->begin(), pWpnList->end(), (ItemID));
-    if (pWpnI == pWpnList->end() || !((*pWpnI) == (ItemID))) return false;
-    *pRes = &(*pWpnI);
-    return true;
-};
+//
+//bool	game_sv_mp::GetTeamItem_ByID		(WeaponDataStruct** pRes, TEAM_WPN_LIST* pWpnList, u16 ItemID)
+//{
+//    if (!pWpnList) return false;
+//    TEAM_WPN_LIST_it pWpnI	= std::find(pWpnList->begin(), pWpnList->end(), (ItemID));
+//    if (pWpnI == pWpnList->end() || !((*pWpnI) == (ItemID))) return false;
+//    *pRes = &(*pWpnI);
+//    return true;
+//};
+//
+//bool	game_sv_mp::GetTeamItem_ByName		(WeaponDataStruct** pRes,TEAM_WPN_LIST* pWpnList, LPCSTR ItemName)
+//{
+//    if (!pWpnList) return false;
+//    TEAM_WPN_LIST_it pWpnI	= std::find(pWpnList->begin(), pWpnList->end(), ItemName);
+//    if (pWpnI == pWpnList->end() || !((*pWpnI) == ItemName)) return false;
+//    *pRes = &(*pWpnI);
+//    return true;
+//};
 
-bool	game_sv_mp::GetTeamItem_ByName		(WeaponDataStruct** pRes,TEAM_WPN_LIST* pWpnList, LPCSTR ItemName)
-{
-    if (!pWpnList) return false;
-    TEAM_WPN_LIST_it pWpnI	= std::find(pWpnList->begin(), pWpnList->end(), ItemName);
-    if (pWpnI == pWpnList->end() || !((*pWpnI) == ItemName)) return false;
-    *pRes = &(*pWpnI);
-    return true;
-};
-*/
 void game_sv_mp::Player_AddBonusMoney(game_PlayerState* ps, s32 MoneyAmount, SPECIAL_KILL_TYPE Reason, u8 Kill)
 {
     if (!ps)
@@ -1797,8 +1826,8 @@ void game_sv_mp::ReadOptions(shared_str& options)
     u64 StartEnvGameTime = generate_time(1, 1, 1, hours, mins, 0, 0);
     float EnvTimeFactor = float(atof(TimeFactor)) * GetEnvironmentGameTimeFactor();
 
-    SetEnvironmentGameTimeFactor(StartEnvGameTime, EnvTimeFactor);
-    SetGameTimeFactor(StartEnvGameTime, g_fTimeFactor);
+    SetEnvironmentGameTimeFactor(/*StartEnvGameTime, */EnvTimeFactor); //---m4d_alife
+    SetGameTimeFactor(/*StartEnvGameTime, */g_fTimeFactor);  //---m4d_alife
 };
 
 static bool g_bConsoleCommandsCreated_MP = false;
@@ -2218,8 +2247,9 @@ void game_sv_mp::DestroyAllPlayerItems(ClientID id_who) // except rukzak
         if (smart_cast<CWeaponKnife*>(*ii))
             continue;
 
-        if (smart_cast<CArtefact*>(*ii))
-            continue;
+        //--------m4d_artefact
+        //if (smart_cast<CArtefact*>(*ii))
+        //    continue;
 
         DestroyGameItem(tempEntity);
     }
@@ -2336,3 +2366,283 @@ void game_sv_mp::OnPlayerChangeName(NET_Packet& P, ClientID sender)
 
     signal_Syncronize();
 };
+
+//--------------------m4d_alife
+void game_sv_mp::OnCreate(u16 id_who)
+{
+    if (!ai().get_alife())
+        return;
+
+    CSE_Abstract* e_who = get_entity_from_eid(id_who);
+    VERIFY(e_who);
+    if (!e_who->m_bALifeControl)
+        return;
+
+    CSE_ALifeObject* alife_object = smart_cast<CSE_ALifeObject*>(e_who);
+    if (!alife_object)
+        return;
+
+    alife_object->m_bOnline = true;
+
+    if (alife_object->ID_Parent != 0xffff)
+    {
+        CSE_ALifeDynamicObject* parent = ai().alife().objects().object(alife_object->ID_Parent, true);
+        if (parent)
+        {
+            CSE_ALifeTraderAbstract* trader = smart_cast<CSE_ALifeTraderAbstract*>(parent);
+            if (trader)
+                alife().create(alife_object);
+            else
+            {
+                CSE_ALifeInventoryBox* const box = smart_cast<CSE_ALifeInventoryBox*>(parent);
+                if (box)
+                    alife().create(alife_object);
+                else
+                    alife_object->m_bALifeControl = false;
+            }
+        }
+        else
+            alife_object->m_bALifeControl = false;
+    }
+    else
+        alife().create(alife_object);
+}
+
+ALife::_TIME_ID game_sv_mp::GetStartGameTime()
+{
+    if (ai().get_alife() && ai().alife().initialized())
+        return (ai().alife().time_manager().start_game_time());
+    else
+        return (inherited::GetStartGameTime());
+}
+
+ALife::_TIME_ID game_sv_mp::GetGameTime()
+{
+    if (ai().get_alife() && ai().alife().initialized())
+        return (ai().alife().time_manager().game_time());
+    else
+        return (inherited::GetGameTime());
+}
+
+float game_sv_mp::GetGameTimeFactor()
+{
+    if (ai().get_alife() && ai().alife().initialized())
+        return (ai().alife().time_manager().time_factor());
+    else
+        return (inherited::GetGameTimeFactor());
+}
+
+void game_sv_mp::SetGameTimeFactor(const float fTimeFactor)
+{
+    if (ai().get_alife() && ai().alife().initialized())
+        return (alife().time_manager().set_time_factor(fTimeFactor));
+    else
+        return (inherited::SetGameTimeFactor(fTimeFactor));
+}
+
+ALife::_TIME_ID game_sv_mp::GetEnvironmentGameTime()
+{
+    if (ai().get_alife() && ai().alife().initialized())
+        return (alife().time_manager().game_time());
+    else
+        return (inherited::GetGameTime());
+}
+
+float game_sv_mp::GetEnvironmentGameTimeFactor() 
+{ 
+    return (inherited::GetGameTimeFactor());
+}
+void game_sv_mp::SetEnvironmentGameTimeFactor(const float fTimeFactor)
+{
+    return (inherited::SetGameTimeFactor(fTimeFactor));
+}
+
+bool game_sv_mp::change_level(NET_Packet& net_packet, ClientID sender)
+{
+    if (ai().get_alife())
+        return (alife().change_level(net_packet));
+    else
+        return (true);
+}
+
+void game_sv_mp::switch_distance(NET_Packet& net_packet, ClientID sender)
+{
+    if (!ai().get_alife())
+        return;
+
+    alife().set_switch_distance(net_packet.r_float());
+}
+
+void game_sv_mp::teleport_object(NET_Packet& net_packet, u16 id)
+{
+    if (!ai().get_alife())
+        return;
+
+    GameGraph::_GRAPH_ID game_vertex_id;
+    u32 level_vertex_id;
+    Fvector position;
+
+    net_packet.r(&game_vertex_id, sizeof(game_vertex_id));
+    net_packet.r(&level_vertex_id, sizeof(level_vertex_id));
+    net_packet.r_vec3(position);
+
+    alife().teleport_object(id, game_vertex_id, level_vertex_id, position);
+}
+
+void game_sv_mp::add_restriction(NET_Packet& packet, u16 id)
+{
+    if (!ai().get_alife())
+        return;
+
+    ALife::_OBJECT_ID restriction_id;
+    packet.r(&restriction_id, sizeof(restriction_id));
+
+    RestrictionSpace::ERestrictorTypes restriction_type;
+    packet.r(&restriction_type, sizeof(restriction_type));
+
+    alife().add_restriction(id, restriction_id, restriction_type);
+}
+
+void game_sv_mp::remove_restriction(NET_Packet& packet, u16 id)
+{
+    if (!ai().get_alife())
+        return;
+
+    ALife::_OBJECT_ID restriction_id;
+    packet.r(&restriction_id, sizeof(restriction_id));
+
+    RestrictionSpace::ERestrictorTypes restriction_type;
+    packet.r(&restriction_type, sizeof(restriction_type));
+
+    alife().remove_restriction(id, restriction_id, restriction_type);
+}
+
+void game_sv_mp::remove_all_restrictions(NET_Packet& packet, u16 id)
+{
+    if (!ai().get_alife())
+        return;
+
+    RestrictionSpace::ERestrictorTypes restriction_type;
+    packet.r(&restriction_type, sizeof(restriction_type));
+
+    alife().remove_all_restrictions(id, restriction_type);
+}
+
+void game_sv_mp::sls_default() 
+{
+    alife().update_switch(); 
+}
+
+shared_str game_sv_mp::level_name(const shared_str& server_options) const
+{
+    if (!ai().get_alife())
+        return (inherited::level_name(server_options));
+    return (alife().level_name());
+}
+
+void game_sv_mp::on_death(CSE_Abstract* e_dest, CSE_Abstract* e_src)
+{
+    inherited::on_death(e_dest, e_src);
+
+    if (!ai().get_alife())
+        return;
+
+    alife().on_death(e_dest, e_src);
+}
+
+BOOL game_sv_mp::OnTouch(u16 eid_who, u16 eid_what, BOOL bForced)
+{
+    CSE_Abstract* e_who = get_entity_from_eid(eid_who);
+    VERIFY(e_who);
+    CSE_Abstract* e_what = get_entity_from_eid(eid_what);
+    VERIFY(e_what);
+
+    if (ai().get_alife())
+    {
+        CSE_ALifeInventoryItem* l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(e_what);
+        CSE_ALifeDynamicObject* l_tpDynamicObject = smart_cast<CSE_ALifeDynamicObject*>(e_who);
+
+        if (l_tpALifeInventoryItem && l_tpDynamicObject &&
+            ai().alife().graph().level().object(l_tpALifeInventoryItem->base()->ID, true) &&
+            ai().alife().objects().object(e_who->ID, true) && ai().alife().objects().object(e_what->ID, true))
+            alife().graph().attach(*e_who, l_tpALifeInventoryItem, l_tpDynamicObject->m_tGraphID, false, false);
+#ifdef DEBUG
+        else if (psAI_Flags.test(aiALife))
+        {
+            Msg("Cannot attach object [%s][%s][%d] to object [%s][%s][%d]", e_what->name_replace(), *e_what->s_name,
+                e_what->ID, e_who->name_replace(), *e_who->s_name, e_who->ID);
+        }
+#endif
+    }
+    return TRUE;
+}
+
+void game_sv_mp::OnDetach(u16 eid_who, u16 eid_what)
+{
+    if (ai().get_alife())
+    {
+        CSE_Abstract* e_who = get_entity_from_eid(eid_who);
+        VERIFY(e_who);
+        CSE_Abstract* e_what = get_entity_from_eid(eid_what);
+        VERIFY(e_what);
+
+        CSE_ALifeInventoryItem* l_tpALifeInventoryItem = smart_cast<CSE_ALifeInventoryItem*>(e_what);
+        if (!l_tpALifeInventoryItem)
+            return;
+
+        CSE_ALifeDynamicObject* l_tpDynamicObject = smart_cast<CSE_ALifeDynamicObject*>(e_who);
+        if (!l_tpDynamicObject)
+            return;
+
+        if (ai().alife().objects().object(e_who->ID, true) &&
+            !ai().alife().graph().level().object(l_tpALifeInventoryItem->base()->ID, true) &&
+            ai().alife().objects().object(e_what->ID, true))
+            alife().graph().detach(*e_who, l_tpALifeInventoryItem, l_tpDynamicObject->m_tGraphID, false, false);
+        else
+        {
+            if (!ai().alife().objects().object(e_what->ID, true))
+            {
+                u16 id = l_tpALifeInventoryItem->base()->ID_Parent;
+                l_tpALifeInventoryItem->base()->ID_Parent = 0xffff;
+
+                CSE_ALifeDynamicObject* dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(e_what);
+                VERIFY(dynamic_object);
+                dynamic_object->m_tNodeID = l_tpDynamicObject->m_tNodeID;
+                dynamic_object->m_tGraphID = l_tpDynamicObject->m_tGraphID;
+                dynamic_object->m_bALifeControl = true;
+                dynamic_object->m_bOnline = true;
+                alife().create(dynamic_object);
+                l_tpALifeInventoryItem->base()->ID_Parent = id;
+            }
+#ifdef DEBUG
+            else if (psAI_Flags.test(aiALife))
+            {
+                Msg("Cannot detach object [%s][%s][%d] from object [%s][%s][%d]",
+                    l_tpALifeInventoryItem->base()->name_replace(), *l_tpALifeInventoryItem->base()->s_name,
+                    l_tpALifeInventoryItem->base()->ID, l_tpDynamicObject->base()->name_replace(),
+                    l_tpDynamicObject->base()->s_name, l_tpDynamicObject->ID);
+            }
+#endif
+        }
+    }
+}
+
+void game_sv_mp::restart_simulator(LPCSTR saved_game_name)
+{
+    shared_str& options = *alife().server_command_line();
+
+    delete_data(m_alife_simulator);
+    server().clear_ids();
+
+    xr_strcpy(g_pGamePersistent->m_game_params.m_game_or_spawn, saved_game_name);
+    xr_strcpy(g_pGamePersistent->m_game_params.m_new_or_load, "load");
+
+    pApp->SetLoadingScreen(new UILoadingScreen());
+    pApp->LoadBegin();
+    m_alife_simulator = new CALifeSimulator(&server(), &options);
+    g_pGamePersistent->SetLoadStageTitle("st_client_synchronising");
+    pApp->LoadForceFinish();
+    g_pGamePersistent->LoadTitle();
+    Device.PreCache(60, true, true);
+    pApp->LoadEnd();
+}

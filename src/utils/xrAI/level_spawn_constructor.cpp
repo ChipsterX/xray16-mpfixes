@@ -177,16 +177,17 @@ void CLevelSpawnConstructor::load_objects()
             continue;
         }
 
-        //		if (abstract->m_tClassID == CLSID_AI_SPAWN_GROUP) {
-        //			add_spawn_group		(abstract);
-        //			continue;
-        //		}
+        		//if (abstract->m_tClassID == CLSID_AI_SPAWN_GROUP) {
+        		//	add_spawn_group		(abstract);
+        		//	continue;
+        		//}
 
-        if (!abstract->m_gameType.MatchType(eGameIDSingle))
-        {
-            F_entity_Destroy(abstract);
-            continue;
-        }
+        //----m4d_alife ???
+        //if (!abstract->m_gameType.MatchType(eGameIDSingle))
+        //{
+        //    F_entity_Destroy(abstract);
+        //    continue;
+        //}
 
         CSE_ALifeObject* alife_object = smart_cast<CSE_ALifeObject*>(abstract);
         if (!alife_object)

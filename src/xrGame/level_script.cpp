@@ -25,6 +25,8 @@
 #include "xrScriptEngine/script_engine.hpp"
 #include "game_cl_single.h"
 #include "game_sv_single.h"
+//---m4d_alife
+#include "game_sv_mp.h"
 #include "map_manager.h"
 #include "map_spot.h"
 #include "map_location.h"

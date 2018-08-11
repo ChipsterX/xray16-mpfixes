@@ -60,6 +60,35 @@ u32 const player_spots_with_top_enemy_divider::get_top_enemy_player_score()
         {
             enemy_team = etGreenTeam + 1;
         }
+        //----m4d
+        else if (player_team == etYellowTeam)
+        {
+            enemy_team = etBlackTeam + 1;
+        }
+        else if (player_team == etBlackTeam)
+        {
+            enemy_team = etYellowTeam + 1;
+        }
+        else if (player_team == etLightBlueTeam)
+        {
+            enemy_team = etBlackTeam + 1;
+        }
+        else if (player_team == etRedTeam)
+        {
+            enemy_team = etDarkGreenTeam + 1;
+        }
+        else if (player_team == etBrownTeam)
+        {
+            enemy_team = etDarkGreenTeam + 1;
+        }
+        else if (player_team == etDarkPinkTeam)
+        {
+            enemy_team = etBlackTeam + 1;
+        }
+        else if (player_team == etDarkGreenTeam)
+        {
+            enemy_team = etYellowTeam + 1;
+        }
         else
         {
             return 0;

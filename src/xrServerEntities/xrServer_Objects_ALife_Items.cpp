@@ -546,17 +546,17 @@ void CSE_ALifeItemWeapon::OnEvent(NET_Packet& tNetPacket, u16 type, u32 time, Cl
     inherited::OnEvent(tNetPacket, type, time, sender);
     switch (type)
     {
-    case GE_WPN_STATE_CHANGE:
-    {
-        tNetPacket.r_u8(wpn_state);
-        //				u8 sub_state =
-        tNetPacket.r_u8();
-        //				u8 NewAmmoType =
-        tNetPacket.r_u8();
-        //				u8 AmmoElapsed =
-        tNetPacket.r_u8();
-    }
-    break;
+        case GE_WPN_STATE_CHANGE:
+        {
+            tNetPacket.r_u8(wpn_state);
+            //				u8 sub_state =
+            tNetPacket.r_u8();
+            //				u8 NewAmmoType =
+            tNetPacket.r_u8();
+            //				u8 AmmoElapsed =
+            tNetPacket.r_u8();
+        }
+        break;
     }
 }
 

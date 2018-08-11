@@ -374,7 +374,7 @@ void game_sv_GameState::Create(shared_str& options)
                     if ((Type() == eGameIDCaptureTheArtefact) && (GameType & eGameIDCaptureTheArtefact))
                     {
                         team = team - 1;
-                        R_ASSERT2(((team >= 0) && (team < 4)) || (type != rptActorSpawn),
+                        R_ASSERT2(((team >= 0) && (team < 10)) || (type != rptActorSpawn),
                             "Problem with CTA Team indexes. Propably you have added rpoint of team 0 for cta game "
                             "type.");
                     }
@@ -388,23 +388,22 @@ void game_sv_GameState::Create(shared_str& options)
                 };
                 switch (type)
                 {
-                case rptActorSpawn:
-                {
-                    rpoints[team].push_back(R);
-                    for (int i = 0; i < int(rpoints[team].size()) - 1; i++)
+                    case rptActorSpawn:
                     {
-                        RPoint rp = rpoints[team][i];
-                        float dist = R.P.distance_to_xz(rp.P) / 2;
-                        if (dist < rpoints_MinDist[team])
-                            rpoints_MinDist[team] = dist;
-                        dist = R.P.distance_to(rp.P) / 2;
-                        if (dist < rpoints_Dist[team])
-                            rpoints_Dist[team] = dist;
-                    };
-                }
-                break;
-                case rptItemSpawn: { m_item_respawner.add_new_rpoint(rp_profile, R);
-                }
+                        rpoints[team].push_back(R);
+                        for (int i = 0; i < int(rpoints[team].size()) - 1; i++)
+                        {
+                            RPoint rp = rpoints[team][i];
+                            float dist = R.P.distance_to_xz(rp.P) / 2;
+                            if (dist < rpoints_MinDist[team])
+                                rpoints_MinDist[team] = dist;
+                            dist = R.P.distance_to(rp.P) / 2;
+                            if (dist < rpoints_Dist[team])
+                                rpoints_Dist[team] = dist;
+                        };
+                    }
+                    break;
+                    case rptItemSpawn: { m_item_respawner.add_new_rpoint(rp_profile, R); }
                 };
             };
             O->close();
@@ -423,6 +422,7 @@ void game_sv_GameState::Create(shared_str& options)
         CInifile* l_tpIniFile = new CInifile(S);
         R_ASSERT(l_tpIniFile);
 
+        //---m4d_SPAWN script
         if (l_tpIniFile->section_exist(type_name()))
         {
             shared_str scripts;
@@ -824,6 +824,7 @@ void game_sv_GameState::OnSwitchPhase(u32 old_phase, u32 new_phase)
 
 void game_sv_GameState::AddDelayedEvent(NET_Packet& tNetPacket, u16 type, u32 time, ClientID sender)
 {
+    //---m4d_alife ???
     //	OnEvent(tNetPacket,type,time,sender);
     if (IsGameTypeSingle())
     {

@@ -119,6 +119,7 @@ BOOL CActor::CanPickItem(const CFrustum& frustum, const Fvector& from, IGameObje
 
 void CActor::PickupModeUpdate()
 {
+    //----m4d ??? подбираение предмета !?!
     if (!m_bPickupMode)
         return; // kUSE key pressed
     if (!IsGameTypeSingle())
@@ -240,6 +241,7 @@ void CActor::PickupModeUpdate_COD()
 
 void CActor::Check_for_AutoPickUp()
 {
+    //----m4d_автоподбираение (тут находится реализация)
     // mp only
     if (!psActorFlags.test(AF_AUTOPICKUP))
         return;

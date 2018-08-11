@@ -87,7 +87,8 @@ enum EGameActions
 
     kLASTACTION,
     kNOTBINDED,
-    kFORCEDWORD = u32(-1)
+    kFORCEDWORD = u32(-1),
+    kTEST_MP = kARTEFACT
 };
 
 struct _keyboard

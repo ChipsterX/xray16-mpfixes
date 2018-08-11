@@ -9,6 +9,9 @@ class game_cl_TeamDeathmatch : public game_cl_Deathmatch
     typedef game_cl_Deathmatch inherited;
     CUIGameTDM* m_game_ui;
 
+    //---m4d_pda
+    CUIPdaWnd* pPdaMenu;
+
 protected:
     bool m_bFriendlyIndicators;
     bool m_bFriendlyNames;
@@ -53,6 +56,14 @@ public:
     virtual LPCSTR GetGameScore(string32& score_dest);
     s32 GetGreenTeamScore() const { return teams[0].score; };
     s32 GetBlueTeamScore() const { return teams[1].score; };
+    //------------------------------------m4d
+    s32 GetYellowTeamScore() const { return teams[2].score; }; //stalker
+    s32 GetBlackTeamScore() const { return teams[3].score; }; //bandit
+    s32 GetLightBlueTeamScore() const { return teams[4].score; }; //clear_sky
+    s32 GetRedTeamScore() const { return teams[5].score; }; //dolg
+    s32 GetBrownTeamScore() const { return teams[6].score; }; //monolith
+    s32 GetDarkPinkTeamScore() const { return teams[7].score; }; //ecolog
+    s32 GetDarkGreenTeamScore() const { return teams[8].score; }; //army
     // from UIGameTDM
 protected:
     virtual const shared_str GetBaseCostSect() { return "teamdeathmatch_base_cost"; }
@@ -61,6 +72,14 @@ protected:
 
     PRESET_ITEMS PresetItemsTeam1;
     PRESET_ITEMS PresetItemsTeam2;
+    //----------------------------------------m4d
+    PRESET_ITEMS PresetItemsTeam3;
+    PRESET_ITEMS PresetItemsTeam4;
+    PRESET_ITEMS PresetItemsTeam5;
+    PRESET_ITEMS PresetItemsTeam6;
+    PRESET_ITEMS PresetItemsTeam7;
+    PRESET_ITEMS PresetItemsTeam8;
+    PRESET_ITEMS PresetItemsTeam9;
 
     BOOL m_bTeamSelected;
     bool m_bShowPlayersNames;
@@ -81,7 +100,7 @@ protected:
     virtual void SetScore();
     virtual void OnSwitchPhase_InProgress();
 
-    virtual u8 GetTeamCount() { return 2; };
+    virtual u8 GetTeamCount() { return 9; };//m4d 
     virtual void OnConnected();
 };
 

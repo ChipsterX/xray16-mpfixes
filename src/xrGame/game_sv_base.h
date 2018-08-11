@@ -145,7 +145,8 @@ protected:
 public:
     game_sv_GameState();
     virtual ~game_sv_GameState();
-#define TEAM_COUNT 4
+    //------------------m4d_? (В оригинале тож 4) хз
+#define TEAM_COUNT 10
 
     BOOL sv_force_sync;
     float rpoints_MinDist[TEAM_COUNT];

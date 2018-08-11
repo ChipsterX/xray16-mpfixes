@@ -77,6 +77,7 @@ bool CLevel::net_start_client3()
         LPCSTR level_ver = NULL;
         LPCSTR download_url = NULL;
 
+        //----m4d_SINGLE/MP (тут чота с опциями сервера
         if (psNET_direct_connect) // single
         {
             shared_str const& server_options = Server->GetConnectOptions();

@@ -2,20 +2,20 @@
 #ifndef FramePSH
 #define FramePSH
 //---------------------------------------------------------------------------
-#include <Classes.hpp>
-#include <Controls.hpp>
-#include <StdCtrls.hpp>
-#include <Forms.hpp>
-#include <Buttons.hpp>
-#include <ExtCtrls.hpp>
+//#include <Classes.hpp>
+//#include <Controls.hpp>
+//#include <StdCtrls.hpp>
+//#include <Forms.hpp>
+//#include <Buttons.hpp>
+//#include <ExtCtrls.hpp>
 
-#include "ExtBtn.hpp"
-#include "mxPlacemnt.hpp"
-#include "ElTree.hpp"
-#include "ElXPThemedControl.hpp"
-#include "ElPanel.hpp"
-#include "ElSplit.hpp"
-#include "multi_edit.hpp"
+#include "../sdk/components/AlexMX/ExtBtn.hpp"
+#include "../sdk/components/AlexMX/mxPlacemnt.hpp"
+#include "../sdk/components/ElPack/Code/Source/ElTree.hpp"
+#include "../sdk/components/ElPack/Code/Source/ElXPThemedControl.hpp"
+#include "../sdk/components/ElPack/Code/Source/ElPanel.hpp"
+#include "../sdk/components/ElPack/Code/Source/ElSplit.hpp"
+#include "../sdk/components/AlexMX/multi_edit.hpp"
 #include "ESceneCustomMTools.h"
 // refs
 class CEditObject;

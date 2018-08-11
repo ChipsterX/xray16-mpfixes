@@ -121,6 +121,7 @@ BOOL CInventoryOwner::net_Spawn(CSE_Abstract* DC)
         return FALSE;
     CSE_Abstract* E = (CSE_Abstract*)(DC);
 
+    //------m4d_SPAWN (диалоги и инвентарь)
     if (IsGameTypeSingle())
     {
         CSE_ALifeTraderAbstract* pTrader = NULL;

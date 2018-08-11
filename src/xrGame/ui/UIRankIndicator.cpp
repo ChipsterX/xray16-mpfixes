@@ -6,7 +6,7 @@
 CUIRankIndicator::CUIRankIndicator() { m_current = u8(-1); }
 CUIRankIndicator::~CUIRankIndicator()
 {
-    for (u8 i = 0; i < max_rank; ++i)
+    for (u8 i = 0; i < 5/*max_rank*/; ++i)
         xr_delete(m_ranks[i]);
 }
 
@@ -14,7 +14,7 @@ void CUIRankIndicator::InitFromXml(CUIXml& xml_doc)
 {
     CUIXmlInit::InitWindow(xml_doc, "rank_wnd", 0, this);
     string256 str;
-    for (u8 i = 0; i < max_rank; ++i)
+    for (u8 i = 0; i < 5/*max_rank*/; ++i)
     {
         CUIStatic*& s = m_ranks[i];
         s = new CUIStatic();
@@ -29,7 +29,8 @@ void CUIRankIndicator::InitFromXml(CUIXml& xml_doc)
 
 void CUIRankIndicator::SetRank(u8 team, u8 rank)
 {
-    rank += team * (max_rank / 2);
+    //--------m4d
+    rank += /*team **/ 0/*(max_rank / 3)*/; // арифметика простая max_rank - количество званий * команды. 3 - кол-во команд
     if (m_current == rank)
         return;
 

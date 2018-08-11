@@ -42,7 +42,7 @@ void game_cl_mp::AddMessageMenu(LPCSTR menu_section, LPCSTR snd_path, LPCSTR tea
         pNewMessage->pMessage = Phrase;
         _GetItem(Line, 1, SoundName);
         //---------------------------------------------------------
-        for (u32 s = 1; s <= 16; s++)
+        for (u32 s = 1; s <= 18; s++)
         {
             string_path FileName_Voice, FileName_Radio, fn;
             xr_sprintf(FileName_Voice, "%s%s%d\\voice_%s%d", snd_path, team_prefix, 1, SoundName, s);

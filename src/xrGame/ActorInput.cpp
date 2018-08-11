@@ -399,6 +399,7 @@ bool CActor::use_Holder(CHolderCustom* holder)
 
 void CActor::ActorUse()
 {
+    //----m4d тут чота прикольное с использованием и разговором из сингла
     if (m_holder)
     {
         CGameObject* GO = smart_cast<CGameObject*>(m_holder);

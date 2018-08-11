@@ -6,7 +6,8 @@
 #include "xrCommon/xr_vector.h"
 #include "xrCore/Threading/Lock.hpp" // XXX: Try to get rid of this compile-time dependency
 
-#define STAT_TEAM_COUNT 3
+//----m4d
+#define STAT_TEAM_COUNT 10  //old 3
 
 struct game_PlayerState;
 

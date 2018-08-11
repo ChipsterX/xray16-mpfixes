@@ -120,7 +120,7 @@ void game_cl_GameState::net_import_state(NET_Packet& P)
     // Players
     u16 p_count;
     P.r_u16(p_count);
-    R_ASSERT(p_count <= MAX_PLAYERS_COUNT);
+    R_ASSERT(p_count <= MAX_PLAYERS_COUNT);  
 
     buffer_vector<ClientID> valid_players(_alloca(sizeof(ClientID) * (p_count + 1)), (p_count + 1));
 
@@ -217,7 +217,8 @@ void game_cl_GameState::TranslateGameMessage(u32 msg, NET_Packet& P)
 
     string512 Text;
     constexpr char Color_Main[] = "%c[255,192,192,192]";
-    constexpr pcstr Color_Teams[3] = {"%c[255,255,240,190]", "%c[255,64,255,64]", "%c[255,64,64,255]"};
+    //----------------m4d
+    constexpr pcstr Color_Teams[10] = {"%c[255,255,240,190]", "%c[255,64,255,64]", "%c[255,64,64,255]", "%c[255,255,180,0]", "%c[255,0,0,0]", "%c[255,0,195,240]", "%c[255,195,0,0]", "%c[255,98,78,24]", "%c[255,120,155,255]", "%c[255,0,95,0]" };
 
     switch (msg)
     {

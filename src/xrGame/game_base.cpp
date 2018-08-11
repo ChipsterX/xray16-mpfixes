@@ -165,6 +165,12 @@ void game_PlayerState::skip_Import(NET_Packet& P)
     }
 }
 
+LPCSTR game_PlayerState::getIcon()
+{
+    xr_sprintf(icon_name, "icon_t%d_s%d", team, skin);
+    return icon_name;
+}
+
 void game_PlayerState::SetGameID(u16 NewID)
 {
     if (mOldIDs.size() >= 10)

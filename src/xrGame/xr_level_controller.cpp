@@ -35,7 +35,7 @@ _action actions[] =
 
     { "torch",             kTORCH,             _both },
     { "night_vision",      kNIGHT_VISION,      _both },
-    { "show_detector",     kDETECTOR,          _sp   },
+    { "show_detector",     kDETECTOR,          _both },
 
     { "wpn_1",             kWPN_1,             _both },
     { "wpn_2",             kWPN_2,             _both },
@@ -67,7 +67,7 @@ _action actions[] =
     { "buy_menu",          kBUY,               _mp   },
     { "skin_menu",         kSKIN,              _mp   },
     { "team_menu",         kTEAM,              _mp   },
-    { "active_jobs",       kACTIVE_JOBS,       _sp   },
+    { "active_jobs",       kACTIVE_JOBS,       _both },
 
     { "vote_begin",        kVOTE_BEGIN,        _mp   },
     { "show_admin_menu",   kSHOW_ADMIN_MENU,   _mp   },

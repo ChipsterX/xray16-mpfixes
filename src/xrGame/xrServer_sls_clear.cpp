@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "game_sv_single.h"
+//---m4d_alife
+#include "game_sv_mp.h"
 #include "alife_simulator.h"
 #include "xrServer_Objects.h"
 #include "xrServer.h"

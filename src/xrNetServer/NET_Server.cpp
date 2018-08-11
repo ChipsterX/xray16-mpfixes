@@ -1013,7 +1013,11 @@ void IPureServer::IpList_Unload()
     m_ip_filter.unload();
 }
 
-bool IPureServer::IsPlayerIPDenied(u32 ip_address) { return !m_ip_filter.is_ip_present(ip_address); }
+bool IPureServer::IsPlayerIPDenied(u32 ip_address)
+{ 
+    return !m_ip_filter.is_ip_present(ip_address); 
+}
+
 bool banned_client_comparer(IBannedClient* C1, IBannedClient* C2) { return C1->BanTime > C2->BanTime; }
 
 void IPureServer::UpdateBannedList()

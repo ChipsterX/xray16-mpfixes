@@ -515,7 +515,7 @@ void CGamePersistent::game_loaded()
     if (Device.dwPrecacheFrame <= 2)
     {
         if (g_pGameLevel && g_pGameLevel->bReady && (allow_intro() && g_keypress_on_start) &&
-            load_screen_renderer.b_need_user_input && m_game_params.m_e_game_type == eGameIDSingle)
+            load_screen_renderer.b_need_user_input && m_game_params.m_e_game_type == eGameIDSingle) 
         {
             VERIFY(NULL == m_intro);
             m_intro = new CUISequencer();

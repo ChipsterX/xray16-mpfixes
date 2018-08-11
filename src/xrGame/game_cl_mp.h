@@ -216,7 +216,7 @@ public:
     virtual void OnPlayerVoted(game_PlayerState* ps);
     virtual void OnSpectatorSelect();
     virtual void OnSkinMenuBack(){};
-    virtual void OnTeamMenuBack(){};
+    virtual void OnTeamMenuBack(){}; 
     virtual void OnTeamMenu_Cancel(){};
     virtual void OnMapInfoAccept(){};
     virtual void OnSkinMenu_Ok(){};

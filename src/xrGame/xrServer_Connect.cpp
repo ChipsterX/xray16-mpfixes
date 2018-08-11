@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "xrserver.h"
 #include "game_sv_single.h"
+//---m4d_alife
+#include "game_sv_mp.h"
 #include "game_sv_deathmatch.h"
 #include "game_sv_teamdeathmatch.h"
 #include "game_sv_artefacthunt.h"

@@ -409,6 +409,7 @@ void CLevel::OnFrame()
 #endif
     Fvector temp_vector;
     m_feel_deny.feel_touch_update(temp_vector, 0.f);
+    //----m4d_alife ????
     if (GameID() != eGameIDSingle)
         psDeviceFlags.set(rsDisableObjectsAsCrows, true);
     else
@@ -417,7 +418,7 @@ void CLevel::OnFrame()
     stats.BulletManagerCommit.Begin();
     BulletManager().CommitEvents();
     stats.BulletManagerCommit.End();
-    // Client receive
+    // Client receive 
     if (net_isDisconnected())
     {
         if (OnClient() && GameID() != eGameIDSingle)
@@ -445,6 +446,7 @@ void CLevel::OnFrame()
             Device.seqParallel.push_back(fastdelegate::FastDelegate0<>(m_map_manager, &CMapManager::Update));
         else
             MapManager().Update();
+        //----m4d_pda ???
         if (IsGameTypeSingle() && Device.dwPrecacheFrame == 0)
         {
             // XXX nitrocaster: was enabled in x-ray 1.5; to be restored or removed

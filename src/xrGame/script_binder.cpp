@@ -134,18 +134,34 @@ void CScriptBinder::net_Destroy()
 
 void CScriptBinder::set_object(CScriptBinderObject* object)
 {
-    if (IsGameTypeSingle())
-    {
+    //-----m4d_script for alife ???
+    //if (IsGameTypeSingle())
+    //{
         VERIFY2(!m_object, "Cannot bind to the object twice!");
 #ifdef _DEBUG
         Msg("* Core object %s is binded with the script object", owner->cName());
 #endif // _DEBUG
         m_object = object;
-    }
-    else
-    {
-        xr_delete(object);
-    }
+    //}
+    //else
+    //{
+    //    xr_delete(object);
+    //}
+//    if (m_object)
+//    {
+//        try
+//        {
+//            VERIFY2(!m_object, "Cannot bind to the object twice!");
+//#ifdef _DEBUG
+//            Msg("* Core object %s is binded with the script object", owner->cName());
+//#endif // _DEBUG
+//            m_object = object;
+//        }
+//        catch (...)
+//        {
+//            xr_delete(object);
+//        }
+//    }
 }
 
 void CScriptBinder::shedule_Update(u32 time_delta)

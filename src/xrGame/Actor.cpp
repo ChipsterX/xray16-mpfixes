@@ -1335,8 +1335,9 @@ void CActor::shedule_Update(u32 DT)
         m_pVehicleWeLookingAt = smart_cast<CHolderCustom*>(game_object);
         CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(game_object);
 
-        if (GameID() == eGameIDSingle)
-        {
+        //----m4d ???
+        //if (GameID() == eGameIDSingle)
+        //{
             if (m_pUsableObject && m_pUsableObject->tip_text())
             {
                 m_sDefaultObjAction = CStringTable().translate(m_pUsableObject->tip_text());
@@ -1380,7 +1381,7 @@ void CActor::shedule_Update(u32 DT)
                     m_sDefaultObjAction = NULL;
                 }
             }
-        }
+        //}
     }
     else
     {
@@ -1397,7 +1398,9 @@ void CActor::shedule_Update(u32 DT)
     //для свойст артефактов, находящихся на поясе
     UpdateArtefactsOnBeltAndOutfit();
     m_pPhysics_support->in_shedule_Update(DT);
-    Check_for_AutoPickUp();
+
+    //----m4d_автоподбираение (отрубаем тут)
+    //Check_for_AutoPickUp();
 };
 #include "debug_renderer.h"
 void CActor::renderable_Render()
@@ -1613,6 +1616,7 @@ float CActor::Radius() const
     return R;
 }
 
+//---m4d_bolt
 bool CActor::use_bolts() const
 {
     if (!IsGameTypeSingle())

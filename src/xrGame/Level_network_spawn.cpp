@@ -98,10 +98,12 @@ void CLevel::g_sv_Spawn(CSE_Abstract* E)
 
     // Client spawn
     //	T.Start		();
+    //---m4d ??? (что тут)
     IGameObject* O = Objects.Create(*E->s_name);
 // Msg				("--spawn--CREATE: %f ms",1000.f*T.GetAsync());
 
 //	T.Start		();
+    
     if (0 == O || (!O->net_Spawn(E)))
     {
         O->net_Destroy();

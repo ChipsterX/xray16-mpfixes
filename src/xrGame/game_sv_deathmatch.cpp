@@ -869,7 +869,7 @@ void game_sv_Deathmatch::assign_RP(CSE_Abstract* E, game_PlayerState* ps_who)
     }
     R_ASSERT(tmpPoints.size());
     std::sort(tmpPoints.begin(), tmpPoints.end());
-    u32 HalfList = tmpPoints.size() / (tmp_functor.pEnemies.empty() ? 1 : 2);
+    u32 HalfList = tmpPoints.size() / (tmp_functor.pEnemies.empty() ? 1 : 2); 
     u32 NewPointID = (HalfList) ? (tmpPoints.size() - HalfList + ::Random.randI(HalfList)) : 0;
     VERIFY2(NewPointID < tmpPoints.size(), "problem with random rpoints");
 
@@ -1178,10 +1178,10 @@ void game_sv_Deathmatch::SetSkin(CSE_Abstract* E, u16 Team, u16 ID)
         //скины для такой комманды не загружены
         switch (Team)
         {
-        case 0: xr_strcat(SkinName, "stalker_hood_multiplayer"); break;
-        case 1: xr_strcat(SkinName, "soldat_beret"); break;
-        case 2: xr_strcat(SkinName, "stalker_black_mask"); break;
-        default: R_ASSERT2(0, "Unknown Team"); break;
+            case 0: xr_strcat(SkinName, "stalker_hood_multiplayer"); break;
+            case 1: xr_strcat(SkinName, "soldat_beret"); break;
+            case 2: xr_strcat(SkinName, "stalker_black_mask"); break;
+            default: R_ASSERT2(0, "Unknown Team"); break;
         };
     };
     xr_strcat(SkinName, ".ogf");
@@ -1610,7 +1610,7 @@ void game_sv_Deathmatch::StartAnomalies(int AnomalySet)
     Msg("Anomaly Set %d Activated", m_dwLastAnomalySetID);
 #endif
 };
-
+//m4d ПОДОБРАТЬ ПРЕДМЕТЫ
 BOOL game_sv_Deathmatch::OnTouch(u16 eid_who, u16 eid_what, BOOL bForced)
 {
     CSE_Abstract* e_who = m_server->ID_to_entity(eid_who);

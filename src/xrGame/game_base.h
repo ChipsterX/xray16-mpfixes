@@ -56,6 +56,9 @@ struct game_PlayerState
     // string64	name;
     u8 team;
 
+    //---m4d_pda
+    string32 icon_name;
+
     // for statistics
     s16 m_iRivalKills;
     s16 m_iSelfKills;
@@ -107,6 +110,10 @@ struct game_PlayerState
     void setFlag(u16 f);
     void resetFlag(u16 f);
     LPCSTR getName() const { return m_account.name().c_str(); }
+
+    //---m4d_pda
+    LPCSTR getIcon();
+
     // void	setName					(LPCSTR s){xr_strcpy(name,s);}
     void SetGameID(u16 NewID);
     bool HasOldID(u16 ID);
@@ -145,7 +152,15 @@ enum ETeam
 {
     etGreenTeam = 0x00,
     etBlueTeam = 0X01,
-    etSpectatorsTeam = 0x02
+    etSpectatorsTeam = 0x02,
+    //--------m4d
+    etYellowTeam = 0X03,
+    etBlackTeam = 0X04,
+    etLightBlueTeam = 0X05,
+    etRedTeam = 0X06,
+    etBrownTeam = 0X07,
+    etDarkPinkTeam = 0X08,
+    etDarkGreenTeam = 0X09
 };
 //--------------
 

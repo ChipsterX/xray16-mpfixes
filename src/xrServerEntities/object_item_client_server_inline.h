@@ -51,7 +51,7 @@ IC CSObjectItemClientServerSingleMp::CObjectItemClientServerSingleMp(const CLASS
     : inherited(clsid, script_clsid)
 {
 }
-
+//----m4d_SINGLE/MP (итемы из МП или сингла, сингловские нельзя подобрать) 
 TEMPLATE_SPECIALIZATION
 ObjectFactory::ClientObjectBaseClass* CSObjectItemClientServerSingleMp::client_object() const
 {

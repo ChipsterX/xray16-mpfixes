@@ -72,8 +72,8 @@ BOOL CTeamBaseZone::net_Spawn(CSE_Abstract* DC)
     {
         char BaseMapLocation[1024];
         xr_sprintf(BaseMapLocation, "mp_team_base_%d_location", m_Team);
-        (Level().MapManager().AddMapLocation(BaseMapLocation, ID()))->EnablePointer();
-    };
+        (Level().MapManager().AddMapLocation(BaseMapLocation, ID()));// ->EnablePointer(); m4d_pda
+    }; 
 
     return (bOk);
 }

@@ -78,6 +78,35 @@ public:
     void OnObjectLeaveTeamBase(u16 id, u16 zone_team);
     virtual void RespawnPlayer(ClientID id_who, bool NoSpectator);
 
+
+    //---m4d_alife
+    virtual void OnCreate(u16 id_who);
+
+    //virtual LPCSTR type_name() const { return "single"; };
+
+    virtual ALife::_TIME_ID GetStartGameTime();
+    virtual ALife::_TIME_ID GetGameTime();
+    virtual float GetGameTimeFactor();
+    virtual void SetGameTimeFactor(const float fTimeFactor);
+
+    virtual ALife::_TIME_ID GetEnvironmentGameTime();
+    virtual float GetEnvironmentGameTimeFactor();
+    virtual void SetEnvironmentGameTimeFactor(const float fTimeFactor);
+
+    virtual void switch_distance(NET_Packet& net_packet, ClientID sender);
+    // virtual BOOL CanHaveFriendlyFire() { return FALSE; }
+    virtual void teleport_object(NET_Packet& packet, u16 id);
+    virtual void add_restriction(NET_Packet& packet, u16 id);
+    virtual void remove_restriction(NET_Packet& packet, u16 id);
+    virtual void remove_all_restrictions(NET_Packet& packet, u16 id);
+    virtual bool custom_sls_default() { return !!m_alife_simulator; };
+    virtual void sls_default();
+    virtual shared_str level_name(const shared_str& server_options) const;
+    virtual void on_death(CSE_Abstract* e_dest, CSE_Abstract* e_src);
+    virtual bool change_level(NET_Packet& net_packet, ClientID sender);
+
+    void restart_simulator(LPCSTR saved_game_name);
+
 protected:
     virtual void WriteGameState(CInifile& ini, LPCSTR sect, bool bRoundResult);
 };

@@ -146,6 +146,7 @@ void CAI_Boar::BoneCallback(CBoneInstance* B)
 
 BOOL CAI_Boar::net_Spawn(CSE_Abstract* DC)
 {
+    //---m4d_SPAWN
     if (!inherited::net_Spawn(DC))
         return (FALSE);
 

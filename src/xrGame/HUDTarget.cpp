@@ -157,6 +157,7 @@ void CHUDTarget::Render()
             CEntityAlive* pCurEnt = smart_cast<CEntityAlive*>(Level().CurrentEntity());
             PIItem l_pI = smart_cast<PIItem>(PP.RQ.O);
 
+            //---m4d (когда наводим прицел на что угодно)
             if (IsGameTypeSingle())
             {
                 CInventoryOwner* our_inv_owner = smart_cast<CInventoryOwner*>(pCurEnt);

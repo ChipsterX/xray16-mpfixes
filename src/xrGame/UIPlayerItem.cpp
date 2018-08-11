@@ -150,6 +150,7 @@ void UIPlayerItem::GetIconParamValue(
     VERIFY(cl_game);
     if (param_name.equal("rank"))
     {
+        //--------------------m4d_HM?
         if (ETeam(cl_game->ModifyTeam(ps->team)) == etGreenTeam)
         {
             xr_sprintf(dest.begin(), dest.size(), "ui_hud_status_green_0%d", ps->rank + 1);

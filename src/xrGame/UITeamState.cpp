@@ -16,17 +16,17 @@ UITeamState::UITeamState() { m_artefact_count = 0; }
 UITeamState::UITeamState(ETeam teamId, UITeamPanels* teamPanels)
 {
     myTeam = teamId;
-    /*myScrollList = new CUIScrollView();
-    myScrollList->SetAutoDelete(true);
+    //myScrollList = new CUIScrollView();
+    //myScrollList->SetAutoDelete(true);
 
-    myScrollList->m_sort_function = fastdelegate::MakeDelegate
-        (this, &UITeamState::SortingLessFunction);
+    //myScrollList->m_sort_function = fastdelegate::MakeDelegate
+    //    (this, &UITeamState::SortingLessFunction);
 
-    myTeamHeader = new UITeamHeader(this);
-    myTeamHeader->SetAutoDelete(true);
+    //myTeamHeader = new UITeamHeader(this);
+    //myTeamHeader->SetAutoDelete(true);
 
-    AttachChild(myTeamHeader);
-    AttachChild(myScrollList);*/
+    //AttachChild(myTeamHeader);
+    //AttachChild(myScrollList);
 
     mainUiXml = NULL;
     m_teamPanels = teamPanels;
@@ -306,6 +306,8 @@ void UITeamState::Update()
     inherited::Update();
 }
 
+
+//------------------------m4d
 void UITeamState::SetArtefactsCount(s32 greenTeamArtC, s32 blueTeamArtC)
 {
     if (myTeam == etGreenTeam)
@@ -315,5 +317,33 @@ void UITeamState::SetArtefactsCount(s32 greenTeamArtC, s32 blueTeamArtC)
     else if (myTeam == etBlueTeam)
     {
         m_artefact_count = blueTeamArtC;
+    }
+    else if (myTeam == etYellowTeam)
+    {
+        m_artefact_count = greenTeamArtC;
+    }
+    else if (myTeam == etBlackTeam)
+    {
+        m_artefact_count = blueTeamArtC;
+    }
+    else if (myTeam == etLightBlueTeam)
+    {
+        m_artefact_count = blueTeamArtC;
+    }
+    else if (myTeam == etRedTeam)
+    {
+        m_artefact_count = greenTeamArtC;
+    }
+    else if (myTeam == etBrownTeam)
+    {
+        m_artefact_count = blueTeamArtC;
+    }
+    else if (myTeam == etDarkPinkTeam)
+    {
+        m_artefact_count = greenTeamArtC;
+    }
+    else if (myTeam == etDarkGreenTeam)
+    {
+        m_artefact_count = greenTeamArtC;
     }
 }

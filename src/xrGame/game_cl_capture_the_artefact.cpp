@@ -547,15 +547,15 @@ void game_cl_CaptureTheArtefact::LoadSndMessages()
     LoadSndMessage("cta_snd_messages", "team1_lead", ID_TEAM1_LEAD);
     LoadSndMessage("cta_snd_messages", "team2_lead", ID_TEAM2_LEAD);
 
-    LoadSndMessage("cta_snd_messages", "team1_rank1", ID_TEAM1_RANK_1);
-    LoadSndMessage("cta_snd_messages", "team1_rank2", ID_TEAM1_RANK_2);
-    LoadSndMessage("cta_snd_messages", "team1_rank3", ID_TEAM1_RANK_3);
-    LoadSndMessage("cta_snd_messages", "team1_rank4", ID_TEAM1_RANK_4);
+    LoadSndMessage("cta_snd_messages", "team1_rank1", ID_TSM_RANK_1);
+    LoadSndMessage("cta_snd_messages", "team1_rank2", ID_TSM_RANK_2);
+    LoadSndMessage("cta_snd_messages", "team1_rank3", ID_TSM_RANK_3);
+    LoadSndMessage("cta_snd_messages", "team1_rank4", ID_TSM_RANK_4);
 
-    LoadSndMessage("cta_snd_messages", "team2_rank1", ID_TEAM2_RANK_1);
-    LoadSndMessage("cta_snd_messages", "team2_rank2", ID_TEAM2_RANK_2);
-    LoadSndMessage("cta_snd_messages", "team2_rank3", ID_TEAM2_RANK_3);
-    LoadSndMessage("cta_snd_messages", "team2_rank4", ID_TEAM2_RANK_4);
+    LoadSndMessage("cta_snd_messages", "team2_rank1", ID_TSM_RANK_1);
+    LoadSndMessage("cta_snd_messages", "team2_rank2", ID_TSM_RANK_2);
+    LoadSndMessage("cta_snd_messages", "team2_rank3", ID_TSM_RANK_3);
+    LoadSndMessage("cta_snd_messages", "team2_rank4", ID_TSM_RANK_4);
 
     LoadSndMessage("dm_snd_messages", "countdown_5", ID_COUNTDOWN_5);
     LoadSndMessage("dm_snd_messages", "countdown_4", ID_COUNTDOWN_4);
@@ -1220,11 +1220,11 @@ void game_cl_CaptureTheArtefact::PlayRankChangedSnd()
 
     if (my_team == etGreenTeam)
     {
-        PlaySndMessage(ID_TEAM1_RANK_1 + rank_index);
+        PlaySndMessage(ID_TSM_RANK_1 + rank_index);
     }
     else if (my_team == etBlueTeam)
     {
-        PlaySndMessage(ID_TEAM2_RANK_1 + rank_index);
+        PlaySndMessage(ID_TSM_RANK_1 + rank_index);
     }
 }
 

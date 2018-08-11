@@ -510,8 +510,9 @@ void InventoryUtilities::SendInfoToActor(LPCSTR info_id)
 
 void InventoryUtilities::SendInfoToLuaScripts(shared_str info)
 {
-    if (GameID() != eGameIDSingle)
-        return;
+    //---m4d_scripts ???
+    //if (GameID() != eGameIDSingle)
+    //    return;
     if (info == shared_str("ui_talk_show"))
     {
         int mode = 10; // now Menu is Talk Dialog (show)

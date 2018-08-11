@@ -289,6 +289,7 @@ void CCustomZone::Load(LPCSTR section)
 
 BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 {
+    //----m4d_SPAWN
     if (!inherited::net_Spawn(DC))
         return (FALSE);
 

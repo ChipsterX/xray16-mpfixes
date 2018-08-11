@@ -43,7 +43,7 @@ protected:
 
 public:
     CUITaskWnd* pUITaskWnd;
-    CUIFactionWarWnd*		pUIFactionWarWnd;
+    //CUIFactionWarWnd*		pUIFactionWarWnd;
     CUIRankingWnd* pUIRankingWnd;
     CUILogsWnd* pUILogsWnd;
 

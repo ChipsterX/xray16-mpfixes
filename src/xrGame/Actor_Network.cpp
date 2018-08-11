@@ -58,11 +58,12 @@ BOOL net_cl_inputguaranteed = FALSE;
 CActor* g_actor = NULL;
 
 CActor* Actor()
-{
-    R_ASSERT2(GameID() == eGameIDSingle, "Actor() method invokation must be only in Single Player game!");
+{  
+    //----m4d_fix
+    //R_ASSERT2(GameID() == eGameIDSingle, "Actor() method invokation must be only in Single Player game!");
     VERIFY(g_actor);
-    /*if (GameID() != eGameIDSingle)
-        VERIFY	(g_actor == Level().CurrentControlEntity());*/
+    if (GameID() != eGameIDSingle)
+        VERIFY	(g_actor == Level().CurrentControlEntity());
     return (g_actor);
 };
 
@@ -713,6 +714,7 @@ BOOL CActor::net_Spawn(CSE_Abstract* DC)
     m_bWasHitted = false;
     m_dwILastUpdateTime = 0;
 
+    //----m4d_map ???
     if (IsGameTypeSingle())
     {
         Level().MapManager().AddMapLocation("actor_location", ID());

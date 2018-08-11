@@ -11,7 +11,7 @@
 #include "ESceneDOTools.h"
 #include "editors/ECore/Editor/ui_main.h"
 #include "editors/ECore/Editor/UI_ToolsCustom.h"
-#include "xrHemisphere.h"
+#include "xrEngine/xrHemisphere.h"
 //----------------------------------------------------
 
 SceneBuilder Builder;

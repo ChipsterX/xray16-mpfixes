@@ -61,6 +61,7 @@ BOOL object::net_Spawn(CSE_Abstract* server_entity)
 
     shape->ComputeBounds();
 
+    //---m4d_SPAWN
     if (!inherited::net_Spawn(server_entity))
         return (FALSE);
 

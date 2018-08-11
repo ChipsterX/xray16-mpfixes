@@ -704,6 +704,7 @@ BOOL CCustomMonster::net_Spawn(CSE_Abstract* DC)
     memory().reload(*cNameSect());
     memory().reinit();
 
+    //---m4d_SPAWN
     if (!movement().net_Spawn(DC) || !inherited::net_Spawn(DC) || !CScriptEntity::net_Spawn(DC))
         return (FALSE);
 

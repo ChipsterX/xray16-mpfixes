@@ -21,9 +21,9 @@ void CUIStatix::Update()
     if (m_bCursorOverWindow)
     {
         if (child)
-            child->SetTextureColor(0xff349F06);
+            child->SetTextureColor(0xffCCCCCC); //Green old 0xff349F06
         else
-            SetTextureColor(0xff349F06);
+            SetTextureColor(0xffCCCCCC); // Green old 0xff349F06
     }
 
     if (!IsEnabled())

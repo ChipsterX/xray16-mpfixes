@@ -118,6 +118,7 @@ BOOL CAI_Trader::net_Spawn(CSE_Abstract* DC)
     R_ASSERT(l_tpTrader);
 
     //проспавнить PDA у InventoryOwner
+    //---m4d_SPAWN
     if (!CInventoryOwner::net_Spawn(DC))
         return (FALSE);
 

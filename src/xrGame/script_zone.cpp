@@ -26,6 +26,7 @@ BOOL CScriptZone::net_Spawn(CSE_Abstract* DC)
 {
     feel_touch.clear();
 
+    //---m4d_SPAWN
     if (!inherited::net_Spawn(DC))
         return (FALSE);
 

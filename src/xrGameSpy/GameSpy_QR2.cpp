@@ -31,7 +31,10 @@ qr2_error_t xrGS_qr2_initA(qr2_t* qrec, const gsi_char* ip, int baseport, int is
 }
 }
 
-void CGameSpy_QR2::Think(void* qrec) { qr2_think(static_cast<qr2_t>(qrec)); }
+void CGameSpy_QR2::Think(void* qrec) 
+{ 
+    qr2_think(static_cast<qr2_t>(qrec));
+}
 void CGameSpy_QR2::ShutDown(void* qrec) { qr2_shutdown(static_cast<qr2_t>(qrec)); }
 void CGameSpy_QR2::RegisterAdditionalKeys()
 {

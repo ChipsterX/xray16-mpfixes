@@ -45,8 +45,20 @@ void game_sv_TeamDeathmatch::Create(shared_str& options)
     game_TeamState td;
     td.score = 0;
     td.num_targets = 0;
-    teams.push_back(td);
-    teams.push_back(td);
+    teams.push_back(td);//freedom
+    teams.push_back(td);//merc
+    //--------------------------------------------------------m4d
+    teams.push_back(td);//stalker
+    teams.push_back(td);//bandit
+    teams.push_back(td);//csky
+    teams.push_back(td);//dolg
+    teams.push_back(td);//monolith
+    teams.push_back(td);//ecolog
+    teams.push_back(td);//army
+    //for (int i = 0; i < teams.size(); i++)
+    //{
+    //    teams.push_back(td);
+    //}
     //-----------------------------------------------------------
     teams_swaped = false;
     round_end_reason = eRoundEnd_Force;
@@ -62,12 +74,20 @@ void game_sv_TeamDeathmatch::net_Export_State(NET_Packet& P, ClientID to)
 u8 game_sv_TeamDeathmatch::AutoTeam()
 {
     struct TeamPlayersCalculator
-    {
-        u32 m_teams[2];
+    {   
+        //------------m4d
+        u32 m_teams[9];
         TeamPlayersCalculator()
         {
             m_teams[0] = 0;
             m_teams[1] = 0;
+            m_teams[2] = 0;
+            m_teams[3] = 0;
+            m_teams[4] = 0;
+            m_teams[5] = 0;
+            m_teams[6] = 0;
+            m_teams[7] = 0;
+            m_teams[8] = 0;
         }
         void operator()(IClient* client)
         {
@@ -117,7 +137,8 @@ u32 game_sv_TeamDeathmatch::GetPlayersCountInTeams(u8 team)
     return tmp_functor.count;
 };
 
-bool game_sv_TeamDeathmatch::TeamSizeEqual() { return GetPlayersCountInTeams(1) == GetPlayersCountInTeams(2); }
+//--------------------------------m4d_HZ
+bool game_sv_TeamDeathmatch::TeamSizeEqual() { return GetPlayersCountInTeams(1) == GetPlayersCountInTeams(2) == GetPlayersCountInTeams(3) == GetPlayersCountInTeams(4) == GetPlayersCountInTeams(5) == GetPlayersCountInTeams(6) == GetPlayersCountInTeams(7) == GetPlayersCountInTeams(8) == GetPlayersCountInTeams(9); }
 struct lowest_player_functor // for autoteam balance
 {
     s16 lowest_score;
@@ -151,66 +172,68 @@ struct lowest_player_functor // for autoteam balance
 };
 
 void game_sv_TeamDeathmatch::AutoBalanceTeams()
-{
-    if (!Get_AutoTeamBalance())
-        return;
-    // calc team count
-    s16 MinTeam, MaxTeam;
-    u32 NumToMove;
-    struct team_counter_functor
-    {
-        u8 l_teams[2];
-        team_counter_functor()
-        {
-            l_teams[0] = 0;
-            l_teams[1] = 0;
-        }
-        void operator()(IClient* client)
-        {
-            xrClientData* l_pC = static_cast<xrClientData*>(client);
-            game_PlayerState* ps = l_pC->ps;
-            if (!ps)
-                return;
-            if (!l_pC->net_Ready)
-                return;
-            if (ps->IsSkip())
-                return;
-            if (ps->team >= 1)
-                ++(l_teams[ps->team - 1]);
-        }
-    };
-    team_counter_functor tmp_functor;
-    m_server->ForEachClientDo(tmp_functor);
+{   
+    return; // =)
+    //----------------m4d_HZ
+    //if (!Get_AutoTeamBalance())
+    //    return;
+    //// calc team count
+    //s16 MinTeam, MaxTeam;
+    //u32 NumToMove;
+    //struct team_counter_functor
+    //{
+    //    u8 l_teams[2];
+    //    team_counter_functor()
+    //    {
+    //        l_teams[0] = 0;
+    //        l_teams[1] = 0;
+    //    }
+    //    void operator()(IClient* client)
+    //    {
+    //        xrClientData* l_pC = static_cast<xrClientData*>(client);
+    //        game_PlayerState* ps = l_pC->ps;
+    //        if (!ps)
+    //            return;
+    //        if (!l_pC->net_Ready)
+    //            return;
+    //        if (ps->IsSkip())
+    //            return;
+    //        if (ps->team >= 1)
+    //            ++(l_teams[ps->team - 1]);
+    //    }
+    //};
+    //team_counter_functor tmp_functor;
+    //m_server->ForEachClientDo(tmp_functor);
 
-    if (tmp_functor.l_teams[0] == tmp_functor.l_teams[1])
-        return;
+    //if (tmp_functor.l_teams[0] == tmp_functor.l_teams[1])
+    //    return;
 
-    if (tmp_functor.l_teams[0] > tmp_functor.l_teams[1])
-    {
-        MinTeam = 1;
-        MaxTeam = 0;
-    }
-    else
-    {
-        MinTeam = 0;
-        MaxTeam = 1;
-    };
+    //if (tmp_functor.l_teams[0] > tmp_functor.l_teams[1])
+    //{
+    //    MinTeam = 1;
+    //    MaxTeam = 0;
+    //}
+    //else
+    //{
+    //    MinTeam = 0;
+    //    MaxTeam = 1;
+    //};
 
-    NumToMove = (tmp_functor.l_teams[MaxTeam] - tmp_functor.l_teams[MinTeam]) / 2;
-    if (!NumToMove)
-        return;
-    ///////////////////////////////////////////////////////////////////////
-    while (NumToMove)
-    {
-        ///////// get lowest score player from MaxTeam
-        lowest_player_functor autob_functor;
-        autob_functor.MaxTeam = MaxTeam;
-        m_server->ForEachClientDo(autob_functor);
-        R_ASSERT(autob_functor.lowest_player && autob_functor.lowest_player->ps);
-        game_PlayerState* ps = autob_functor.lowest_player->ps;
-        ps->team = u8((MinTeam + 1) & 0x00ff);
-        NumToMove--;
-    }
+    //NumToMove = (tmp_functor.l_teams[MaxTeam] - tmp_functor.l_teams[MinTeam]) / 2;
+    //if (!NumToMove)
+    //    return;
+    /////////////////////////////////////////////////////////////////////////
+    //while (NumToMove)
+    //{
+    //    ///////// get lowest score player from MaxTeam
+    //    lowest_player_functor autob_functor;
+    //    autob_functor.MaxTeam = MaxTeam;
+    //    m_server->ForEachClientDo(autob_functor);
+    //    R_ASSERT(autob_functor.lowest_player && autob_functor.lowest_player->ps);
+    //    game_PlayerState* ps = autob_functor.lowest_player->ps;
+    //    ps->team = u8((MinTeam + 1) & 0x00ff);
+    //    NumToMove--;
+    //}
 };
 
 void game_sv_TeamDeathmatch::OnRoundStart()
@@ -265,7 +288,8 @@ void game_sv_TeamDeathmatch::OnPlayerConnectFinished(ClientID id_who)
     GenerateGameMessage(P);
     P.w_u32(GAME_EVENT_PLAYER_CONNECTED);
     P.w_clientID(id_who);
-    xrCData->ps->team = 1;
+    //-----автотим
+    xrCData->ps->team = 3; //m4d_teams (old 1)
     xrCData->ps->m_iTeamKills = 0;
     xrCData->ps->setFlag(GAME_PLAYER_FLAG_SPECTATOR);
     xrCData->ps->setFlag(GAME_PLAYER_FLAG_READY);
@@ -292,6 +316,11 @@ void game_sv_TeamDeathmatch::OnPlayerSelectTeam(NET_Packet& P, ClientID sender)
     P.r_s16(l_team);
     OnPlayerChangeTeam(l_pC->ID, l_team);
     //-------------------------------------------------
+    //---m4d_lua
+
+    //luabind::functor<void> funct;
+    //R_ASSERT(GEnv.ScriptEngine->functor("sniper_add.gay_spawn", funct));
+    //funct();
 };
 
 void game_sv_TeamDeathmatch::OnPlayerChangeTeam(ClientID id_who, s16 team)
@@ -471,7 +500,16 @@ bool game_sv_TeamDeathmatch::OnKillResult(KILL_RES KillResult, game_PlayerState*
 
 bool game_sv_TeamDeathmatch::checkForFragLimit()
 {
-    if (g_sv_dm_dwFragLimit && ((teams[0].score >= g_sv_dm_dwFragLimit) || (teams[1].score >= g_sv_dm_dwFragLimit)))
+    //------m4d
+    if (g_sv_dm_dwFragLimit && ((teams[0].score >= g_sv_dm_dwFragLimit) 
+        || (teams[1].score >= g_sv_dm_dwFragLimit)
+        || (teams[2].score >= g_sv_dm_dwFragLimit) 
+        || (teams[3].score >= g_sv_dm_dwFragLimit) 
+        || (teams[4].score >= g_sv_dm_dwFragLimit)
+        || (teams[5].score >= g_sv_dm_dwFragLimit)
+        || (teams[6].score >= g_sv_dm_dwFragLimit)
+        || (teams[7].score >= g_sv_dm_dwFragLimit)
+        || (teams[8].score >= g_sv_dm_dwFragLimit)))
     {
         OnFraglimitExceed();
         return true;
@@ -521,9 +559,25 @@ void game_sv_TeamDeathmatch::LoadTeams()
     };
     m_strWeaponsData->Load(m_sBaseWeaponCostSection);
 
+    //--------------------------------------------------m4d
+    //for (int i = 0; i < 10; i++)
+    //{
+    //    //LoadTeamData("teamdeathmatch_team%d");
+    //    string16 buf_name;
+    //    xr_sprintf(buf_name, "teamdeathmatch_team%d", i);
+    //    LoadTeamData(buf_name);
+    //    //ini.w_u32(sect, buf_name, GetTeamScore(i));
+    //}
     LoadTeamData("teamdeathmatch_team0");
     LoadTeamData("teamdeathmatch_team1");
     LoadTeamData("teamdeathmatch_team2");
+    LoadTeamData("teamdeathmatch_team3");
+    LoadTeamData("teamdeathmatch_team4");
+    LoadTeamData("teamdeathmatch_team5");
+    LoadTeamData("teamdeathmatch_team6");
+    LoadTeamData("teamdeathmatch_team7");
+    LoadTeamData("teamdeathmatch_team8");
+    LoadTeamData("teamdeathmatch_team9");
 };
 
 void game_sv_TeamDeathmatch::Update()
@@ -531,8 +585,16 @@ void game_sv_TeamDeathmatch::Update()
     inherited::Update();
     switch (Phase())
     {
+        //-------------m4d_!
     case GAME_PHASE_TEAM1_SCORES:
     case GAME_PHASE_TEAM2_SCORES:
+    case GAME_PHASE_TEAM3_SCORES:
+    case GAME_PHASE_TEAM4_SCORES:
+    case GAME_PHASE_TEAM5_SCORES:
+    case GAME_PHASE_TEAM6_SCORES:
+    case GAME_PHASE_TEAM7_SCORES:
+    case GAME_PHASE_TEAM8_SCORES:
+    case GAME_PHASE_TEAM9_SCORES:
     case GAME_PHASE_TEAMS_IN_A_DRAW:
     {
         if (m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync())
@@ -618,6 +680,7 @@ void game_sv_TeamDeathmatch::WriteGameState(CInifile& ini, LPCSTR sect, bool bRo
     }
 }
 
+//--------------------------------------m4d_? еще чота с подбираением предметов
 BOOL game_sv_TeamDeathmatch::OnTouchItem(CSE_ActorMP* actor, CSE_Abstract* item)
 {
     VERIFY(actor);
@@ -813,4 +876,106 @@ void game_sv_TeamDeathmatch::RespawnPlayer(ClientID id_who, bool NoSpectator)
     game_PlayerState* ps = xrCData->ps;
     VERIFY(ps);
     ps->resetFlag(GAME_PLAYER_FLAG_ONBASE);
+
+    //----m4d_ai_test
+    //if (ai().get_alife())
+    //{
+    //    luabind::functor<void> funct;
+    //    R_ASSERT(GEnv.ScriptEngine->functor("sniper_add.gay_spawn", funct));
+    //    funct();
+    //}
+}
+
+//-----------m4d_alife 
+void game_sv_TeamDeathmatch::OnCreate(u16 id_who)
+{
+    inherited::OnCreate(id_who);
+}
+ALife::_TIME_ID game_sv_TeamDeathmatch::GetStartGameTime()
+{
+    return inherited::GetStartGameTime();
+}
+
+ALife::_TIME_ID game_sv_TeamDeathmatch::GetGameTime()
+{
+    return inherited::GetGameTime();
+}
+
+float game_sv_TeamDeathmatch::GetGameTimeFactor()
+{
+    return inherited::GetGameTimeFactor();
+}
+
+void game_sv_TeamDeathmatch::SetGameTimeFactor(const float fTimeFactor)
+{
+    inherited::SetGameTimeFactor(fTimeFactor);
+}
+
+ALife::_TIME_ID game_sv_TeamDeathmatch::GetEnvironmentGameTime()
+{
+    return inherited::GetGameTime();
+}
+
+float game_sv_TeamDeathmatch::GetEnvironmentGameTimeFactor()
+{
+    return (inherited::GetGameTimeFactor());
+}
+void game_sv_TeamDeathmatch::SetEnvironmentGameTimeFactor(const float fTimeFactor)
+{
+    return (inherited::SetGameTimeFactor(fTimeFactor));
+}
+
+bool game_sv_TeamDeathmatch::change_level(NET_Packet& net_packet, ClientID sender)
+{
+    return inherited::change_level(net_packet, sender);
+}
+
+void game_sv_TeamDeathmatch::switch_distance(NET_Packet& net_packet, ClientID sender)
+{
+    inherited::switch_distance(net_packet, sender);
+}
+
+void game_sv_TeamDeathmatch::teleport_object(NET_Packet& net_packet, u16 id)
+{
+    inherited::teleport_object(net_packet, id);
+}
+
+void game_sv_TeamDeathmatch::add_restriction(NET_Packet& packet, u16 id)
+{
+    inherited::add_restriction(packet, id);
+}
+
+void game_sv_TeamDeathmatch::remove_restriction(NET_Packet& packet, u16 id)
+{
+    inherited::remove_restriction(packet, id);
+}
+
+void game_sv_TeamDeathmatch::remove_all_restrictions(NET_Packet& packet, u16 id)
+{
+    inherited::remove_all_restrictions(packet, id);
+}
+
+void game_sv_TeamDeathmatch::sls_default()
+{
+    inherited::sls_default();
+}
+
+shared_str game_sv_TeamDeathmatch::level_name(const shared_str& server_options) const
+{
+    return inherited::level_name(server_options);
+}
+
+void game_sv_TeamDeathmatch::on_death(CSE_Abstract* e_dest, CSE_Abstract* e_src)
+{
+    inherited::on_death(e_dest, e_src);
+
+    if (!ai().get_alife())
+        return;
+
+    alife().on_death(e_dest, e_src);
+}
+
+void game_sv_TeamDeathmatch::restart_simulator(LPCSTR saved_game_name)
+{
+    inherited::restart_simulator(saved_game_name);
 }

@@ -9,6 +9,8 @@
 #include "HangingLamp.h"
 #include "xrPhysics/PhysicsShell.h"
 #include "game_sv_single.h"
+//---m4d_alife
+#include "game_sv_mp.h" 
 #include "xrAICore/Navigation/level_graph.h"
 #include "ph_shell_interface.h"
 #include "script_game_object.h"

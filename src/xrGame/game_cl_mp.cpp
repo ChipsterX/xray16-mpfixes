@@ -337,8 +337,9 @@ void game_cl_mp::GetActiveVoting()
     u_EventSend(P);
 }
 
-u32 Color_Teams_u32[3] = { color_rgba(255, 240, 190, 255), color_rgba(64, 255, 64, 255), color_rgba(64, 64, 255, 255) };
-constexpr pcstr Color_Teams[3] = {"%c[255,255,240,190]", "%c[255,64,255,64]", "%c[255,64,64,255]"};
+//-----------m4d
+u32 Color_Teams_u32[10] = { color_rgba(255, 240, 190, 255), color_rgba(64, 255, 64, 255), color_rgba(64, 64, 255, 255),  color_rgba(255, 180, 0, 255), color_rgba(0, 0, 0, 255), color_rgba(0, 195, 240, 255), color_rgba(195, 0, 0, 255), color_rgba(98, 78, 24, 255), color_rgba(120, 155, 255, 255), color_rgba(0, 95, 0, 255) };
+constexpr pcstr Color_Teams[10] = { "%c[255,255,240,190]", "%c[255,64,255,64]", "%c[255,64,64,255]", "%c[255,255,180,0]" , "%c[255,0,0,0]", "%c[255,0,195,240]", "%c[255,195,0,0]", "%c[255,98,78,24]", "%c[255,120,155,255]", "%c[255,0,95,0]" };
 constexpr char Color_Main[] = "%c[255,192,192,192]";
 u32 Color_Neutral_u32 = color_rgba(255, 0, 255, 255);
 constexpr char Color_Red[] = "%c[255,255,1,1]";
@@ -492,7 +493,7 @@ void game_cl_mp::ChatSay(LPCSTR phrase, bool bAll)
 
     NET_Packet P;
     P.w_begin(M_CHAT_MESSAGE);
-    P.w_s16((bAll) ? -1 : local_player->team); // -1 = all, 0 = green, 1 = blue
+    P.w_s16((bAll) ? -1 : local_player->team); // -1 = all, 0 = green, 1 = blue, m4d: 2 = stalkers, 3 = bandits, 4 = clear_sky...
     P.w_stringZ(local_player->getName());
     P.w_stringZ(phrase);
     P.w_s16(team);
@@ -542,16 +543,33 @@ void game_cl_mp::OnChatMessage(NET_Packet* P)
     CStringTable st;
     switch (team)
     {
-    case 0: Msg("%s: %s : %s", *st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
-    case 1: Msg("- %s: %s : %s", *st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
-    case 2: Msg("@ %s: %s : %s", *st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
+            //----------------------4to eto?
+        case 0: Msg("%s: %s : %s", *st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
+        case 1: Msg("- %s: %s : %s", *st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
+        case 2: Msg("@ %s: %s : %s", *st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
+            //new
+        default:
+        {
+            if (team > 2)
+            {
+                Msg("@ %s: %s : %s", *st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str());
+            }
+        }
+        break;
+        //case 3: Msg("@ %s: %s : %s", *st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
+        //case 4: Msg("@ %s: %s : %s", *st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
+        //case 5: Msg("@ %s: %s : %s", *st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
+        //case 6: Msg("@ %s: %s : %s", *st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
+        //case 7: Msg("@ %s: %s : %s", *st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
+        //case 8: Msg("@ %s: %s : %s", *st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
+        //case 9: Msg("@ %s: %s : %s", *st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
     }
 
     //#endif
     if (GEnv.isDedicatedServer)
         return;
 
-    if (team < 0 || 2 < team)
+    if (team < 0 || 9 < team) // m4d
     {
         team = 0;
     }
@@ -753,10 +771,27 @@ void game_cl_mp::OnSwitchPhase(u32 old_phase, u32 new_phase)
         }
     };
 
+    //------------------m4d
     case GAME_PHASE_TEAM1_SCORES:
     case GAME_PHASE_TEAM2_SCORES:
+    case GAME_PHASE_TEAM3_SCORES:
+    case GAME_PHASE_TEAM4_SCORES:
+    case GAME_PHASE_TEAM5_SCORES:
+    case GAME_PHASE_TEAM6_SCORES:
+    case GAME_PHASE_TEAM7_SCORES:
+    case GAME_PHASE_TEAM8_SCORES:
+    case GAME_PHASE_TEAM9_SCORES:
+
     case GAME_PHASE_TEAM1_ELIMINATED:
     case GAME_PHASE_TEAM2_ELIMINATED:
+    case GAME_PHASE_TEAM3_ELIMINATED:
+    case GAME_PHASE_TEAM4_ELIMINATED:
+    case GAME_PHASE_TEAM5_ELIMINATED:
+    case GAME_PHASE_TEAM6_ELIMINATED:
+    case GAME_PHASE_TEAM7_ELIMINATED:
+    case GAME_PHASE_TEAM8_ELIMINATED:
+    case GAME_PHASE_TEAM9_ELIMINATED:
+
     case GAME_PHASE_TEAMS_IN_A_DRAW:
     case GAME_PHASE_PLAYER_SCORES: { HideMessageMenus();
     }
@@ -1267,7 +1302,7 @@ void game_cl_mp::OnEventMoneyChanged(NET_Packet& P)
         {
             BName = "new_rank";
             s16 player_team = ModifyTeam(local_player->team);
-            R_ASSERT((player_team == 0) || (player_team == 1));
+            R_ASSERT((player_team == 0) || (player_team == 1) || (player_team == 2) || (player_team == 3) || (player_team == 4) || (player_team == 5) || (player_team == 6) || (player_team == 7) || (player_team == 8)); //---------m4d
             RectID = ((local_player->rank) * 2) + player_team;
         }
         break;
@@ -1409,6 +1444,7 @@ void game_cl_mp::LoadBonuses()
         {
             CUITextureMaster::GetTextureShader("ui_hud_status_blue_01", NewBonus.IconShader);
 
+            //----------------------------m4d_!
             Frect IconRect;
             for (u32 r = 1; r <= 5; r++)
             {

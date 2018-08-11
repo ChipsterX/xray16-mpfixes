@@ -80,6 +80,7 @@ void CUIZoneMap::Init()
     rel_pos.mul(m_background.GetWndSize());
     m_clock_wnd->SetWndPos(rel_pos);
 
+    //----m4d_ (что то с картой из сингла)
     if (IsGameTypeSingle())
     {
         xml_init.InitStatic(uiXml, "minimap:static_counter", 0, &m_Counter);
@@ -107,7 +108,7 @@ void CUIZoneMap::Update()
     CActor* pActor = smart_cast<CActor*>(Level().CurrentViewEntity());
     if (!pActor)
         return;
-
+    //-----m4d (чота с картой из сингла, по идее количество плееров рядом)
     if (!(Device.dwFrame % 20) && IsGameTypeSingle())
     {
         string16 text_str;

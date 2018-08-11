@@ -224,8 +224,9 @@ void CActorCondition::UpdateCondition()
     m_fAlcohol += m_fV_Alcohol * m_fDeltaTime;
     clamp(m_fAlcohol, 0.0f, 1.0f);
 
-    if (IsGameTypeSingle())
-    {
+    //----m4d_эффект алкашки
+    //if (IsGameTypeSingle())
+    //{
         CEffectorCam* ce = Actor()->Cameras().GetCamEffector((ECamEffectorType)effAlcohol);
         if ((m_fAlcohol > 0.0001f))
         {
@@ -266,14 +267,15 @@ void CActorCondition::UpdateCondition()
         }
         //-		if(fis_zero(GetPsyHealth()))
         //-			SetHealth( 0.0f );
-    };
+    /*};*/
 
     UpdateSatiety();
     UpdateBoosters();
 
     inherited::UpdateCondition();
 
-    if (IsGameTypeSingle())
+    //-------m4d (так и не понял что оно делает)
+   //if (IsGameTypeSingle())
         UpdateTutorialThresholds();
 
     if (GetHealth() < 0.05f && m_death_effector == NULL && IsGameTypeSingle())
@@ -299,7 +301,7 @@ void CActorCondition::UpdateBoosters()
         BOOSTER_MAP::iterator it = m_booster_influences.find((EBoostParams)i);
         if (it != m_booster_influences.end())
         {
-            it->second.fBoostTime -= m_fDeltaTime / (IsGameTypeSingle() ? Level().GetGameTimeFactor() : 1.0f);
+            it->second.fBoostTime -= m_fDeltaTime /  (IsGameTypeSingle() ? Level().GetGameTimeFactor() : 2.0f); //---m4d_fix правка бустеров (old 1.0)
             if (it->second.fBoostTime <= 0.0f)
             {
                 DisableBoostParameters(it->second);
@@ -417,11 +419,12 @@ float CActorCondition::GetZoneDanger() const
 void CActorCondition::UpdateRadiation() { inherited::UpdateRadiation(); }
 void CActorCondition::UpdateSatiety()
 {
-    if (!IsGameTypeSingle())
-    {
-        m_fDeltaPower += m_fV_SatietyPower * m_fDeltaTime;
-        return;
-    }
+    //-------m4d вернул сытость из сингла
+    //if (!IsGameTypeSingle())
+    //{
+    //    m_fDeltaPower += m_fV_SatietyPower * m_fDeltaTime;
+    //    return;
+    //}
 
     if (m_fSatiety > 0)
     {

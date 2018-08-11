@@ -45,8 +45,11 @@ protected:
     CUIStatic* m_pFrames;
 #define p_image_count 6
     CUIStatix* m_pImage[p_image_count];
-    //	CUI3tButton*	m_pButtons[2];
-    //	CUIAnimatedStatic* m_pAnims[2];
+    
+    //---m4d_skins
+    CUI3tButton*	m_pButtons[2];
+    CUIAnimatedStatic* m_pAnims[2];
+
     CUI3tButton* m_pBtnAutoSelect;
     CUI3tButton* m_pBtnSpectator;
     CUI3tButton* m_pBtnBack;

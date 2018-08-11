@@ -16,8 +16,8 @@
 #include "Common/LevelStructure.hpp"
 #include "editors/ECore/Editor/ui_main.h"
 #include "UI_LevelTools.h"
-#include "xrHemisphere.h"
-#include "ResourceManager.h"
+#include "xrEngine/xrHemisphere.h"
+#include "Layers/xrRender/ResourceManager.h"
 #include "editors/ECore/Editor/ImageManager.h"
 #include "editors/ECore/Engine/Image.h"
 

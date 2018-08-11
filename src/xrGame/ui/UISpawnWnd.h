@@ -12,6 +12,7 @@ typedef enum { TEAM_MENU_BACK = 0, TEAM_MENU_SPECTATOR, TEAM_MENU_AUTOSELECT } E
 
 class CUISpawnWnd : public CUIDialogWnd
 {
+    //-----------------------m4d
 private:
     typedef CUIDialogWnd inherited;
 
@@ -39,11 +40,22 @@ protected:
 protected:
     CUIStatic* m_pCaption;
     CUIStatic* m_pBackground;
-    CUIStatic* m_pFrames[2];
+    CUIStatic* m_pFrames[9];
+
+    //m4d
     CUIScrollView* m_pTextDesc;
+
     CUIStatix* m_pImage1;
     CUIStatix* m_pImage2;
-    CUI3tButton* m_pBtnAutoSelect;
+    CUIStatix* m_pImage3;
+    CUIStatix* m_pImage4;
+    CUIStatix* m_pImage5;
+    CUIStatix* m_pImage6;
+    CUIStatix* m_pImage7;
+    CUIStatix* m_pImage8;
+    CUIStatix* m_pImage9;
+
+    //CUI3tButton* m_pBtnAutoSelect;
     CUI3tButton* m_pBtnSpectator;
     CUI3tButton* m_pBtnBack;
 

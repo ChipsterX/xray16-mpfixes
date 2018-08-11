@@ -23,17 +23,18 @@ CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName, s16 team)
     m_pFrames = new CUIStatic();
     AttachChild(m_pFrames);
 
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 3; i++)
     {
         m_pImage[i] = new CUIStatix();
         AttachChild(m_pImage[i]);
     }
-    //	m_pAnims[0]		= new CUIAnimatedStatic(); m_pFrames->AttachChild(m_pAnims[0]);
-    //	m_pAnims[1]		= new CUIAnimatedStatic(); m_pFrames->AttachChild(m_pAnims[1]);
-    //	m_pButtons[0]	= new CUI3tButton();	m_pFrames->AttachChild(m_pButtons[0]);
-    // m_pButtons[0]->SetMessageTarget(this);
-    //	m_pButtons[1]	= new CUI3tButton();	m_pFrames->AttachChild(m_pButtons[1]);
-    // m_pButtons[1]->SetMessageTarget(this);
+    //----m4d_skins
+    m_pAnims[0] = new CUIAnimatedStatic(); m_pFrames->AttachChild(m_pAnims[0]);
+    m_pAnims[1] = new CUIAnimatedStatic(); m_pFrames->AttachChild(m_pAnims[1]);
+    m_pButtons[0] = new CUI3tButton();	m_pFrames->AttachChild(m_pButtons[0]);
+    m_pButtons[0]->SetMessageTarget(this);
+    m_pButtons[1] = new CUI3tButton();	m_pFrames->AttachChild(m_pButtons[1]);
+    m_pButtons[1]->SetMessageTarget(this);
 
     m_pBtnAutoSelect = new CUI3tButton();
     AttachChild(m_pBtnAutoSelect);
@@ -51,14 +52,16 @@ CUISkinSelectorWnd::~CUISkinSelectorWnd()
     xr_delete(m_pCaption);
     xr_delete(m_pBackground);
     xr_delete(m_pFrames);
-    //	xr_delete(m_pButtons[0]);
-    //	xr_delete(m_pButtons[1]);
-    //	xr_delete(m_pAnims[0]);
-    //	xr_delete(m_pAnims[1]);
+    //---m4d_skins
+    xr_delete(m_pButtons[0]);
+    xr_delete(m_pButtons[1]);
+    xr_delete(m_pAnims[0]);
+    xr_delete(m_pAnims[1]);
+
     xr_delete(m_pBtnAutoSelect);
     xr_delete(m_pBtnSpectator);
     xr_delete(m_pBtnBack);
-    for (int i = 0; i < p_image_count; i++)
+    for (int i = 0; i < 3/*p_image_count*/; i++)
         xr_delete(m_pImage[i]);
 
     delete_data(m_skinsEnabled);
@@ -77,13 +80,13 @@ void CUISkinSelectorWnd::InitSkins()
     {
         _GetItem(lst, j, singleItem);
         m_skins.push_back(singleItem);
-        m_skinsEnabled.push_back(j);
+        m_skinsEnabled.push_back(j); //Активирует скин ENABLED
     }
 }
 
 void CUISkinSelectorWnd::UpdateSkins()
 {
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 3; i++)
     {
         if (!!m_shader)
             m_pImage[i]->InitTextureEx(m_skins[i + m_firstSkin].c_str(), m_shader.c_str());
@@ -95,22 +98,24 @@ void CUISkinSelectorWnd::UpdateSkins()
         else
             m_pImage[i]->SetSelectedState(false);
 
-        string16 buf;
-        if (m_firstSkin + i < 10)
-        {
-            xr_itoa((m_firstSkin + 1 + i) % 10, buf, 10);
-            xr_strcat(buf, sizeof(buf), " ");
-            m_pImage[i]->TextItemControl()->SetText(buf);
-        }
-        else
-            m_pImage[i]->TextItemControl()->SetText("");
+        //гейская нумерация скинов
+        //string16 buf;
+        //if (m_firstSkin + i < 10)
+        //{
+        //    xr_itoa((m_firstSkin + 1 + i) % 10, buf, 10);
+        //    xr_strcat(buf, sizeof(buf), " ");
+        //    m_pImage[i]->TextItemControl()->SetText(buf);
+        //}
+        //else
+        //    m_pImage[i]->TextItemControl()->SetText("");
 
         xr_vector<int>::iterator it = std::find(m_skinsEnabled.begin(), m_skinsEnabled.end(), i + m_firstSkin);
         m_pImage[i]->Enable(it != m_skinsEnabled.end());
     }
 
-    //	m_pButtons[0]->Enable(m_firstSkin > 0);
-    //	m_pButtons[1]->Enable(m_firstSkin + 4 < (int)m_skins.size());
+    //---m4d_skins
+    m_pButtons[0]->Enable(m_firstSkin > 0);
+    m_pButtons[1]->Enable(m_firstSkin + 3 < (int)m_skins.size());
 }
 
 void CUISkinSelectorWnd::Init(const char* strSectionName)
@@ -126,11 +131,11 @@ void CUISkinSelectorWnd::Init(const char* strSectionName)
     CUIXmlInit::InitStatic(xml_doc, "skin_selector:background", 0, m_pBackground);
     CUIXmlInit::InitStatic(xml_doc, "skin_selector:image_frames", 0, m_pFrames);
 
-    //	CUIXmlInit::Init3tButton(xml_doc,"skin_selector:image_frames:btn_left",	0,	m_pButtons[0]);
-    //	CUIXmlInit::Init3tButton(xml_doc,"skin_selector:image_frames:btn_right",0,	m_pButtons[1]);
-
-    //	CUIXmlInit::InitAnimatedStatic(xml_doc,"skin_selector:image_frames:a_static_1",	0,	m_pAnims[0]);
-    //	CUIXmlInit::InitAnimatedStatic(xml_doc,"skin_selector:image_frames:a_static_2",	0,	m_pAnims[1]);
+    //---m4d_skins
+    CUIXmlInit::Init3tButton(xml_doc, "skin_selector:image_frames:btn_left", 0, m_pButtons[0]);
+    CUIXmlInit::Init3tButton(xml_doc, "skin_selector:image_frames:btn_right", 0, m_pButtons[1]);
+    CUIXmlInit::InitAnimatedStatic(xml_doc, "skin_selector:image_frames:a_static_1", 0, m_pAnims[0]);
+    CUIXmlInit::InitAnimatedStatic(xml_doc, "skin_selector:image_frames:a_static_2", 0, m_pAnims[1]);
 
     CUIXmlInit::Init3tButton(xml_doc, "skin_selector:btn_spectator", 0, m_pBtnSpectator);
     CUIXmlInit::Init3tButton(xml_doc, "skin_selector:btn_autoselect", 0, m_pBtnAutoSelect);
@@ -141,7 +146,7 @@ void CUISkinSelectorWnd::Init(const char* strSectionName)
 
     InitSkins();
     string64 buff;
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 3; i++)
     {
         xr_sprintf(buff, "skin_selector:image_%d", i);
         CUIXmlInit::InitStatic(xml_doc, buff, 0, m_pImage[i]);
@@ -158,12 +163,18 @@ void CUISkinSelectorWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
     case BUTTON_CLICKED:
         game = smart_cast<game_cl_mp*>(&(Game()));
         // dm = smart_cast<game_cl_Deathmatch *>(&(Game()));
-        /*
-			if (pWnd == m_pButtons[0])
-				OnKeyLeft();
-			else if (pWnd == m_pButtons[1])
-				OnKeyRight();
-			else */ if (pWnd == m_pBtnAutoSelect)
+
+        //----m4d_skins
+        if (pWnd == m_pButtons[0])
+        {
+            OnKeyLeft();
+        }
+        else if (pWnd == m_pButtons[1])
+        {
+            OnKeyRight();
+        }
+        //----
+        else if (pWnd == m_pBtnAutoSelect)
         {
             m_iActiveIndex = -1;
             OnBtnOK();
@@ -175,39 +186,45 @@ void CUISkinSelectorWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
         }
         else if (pWnd == m_pBtnBack)
         {
-            HideDialog();
             game->OnSkinMenuBack();
+            HideDialog();
         }
         else
-            for (int i = 0; i < 6; i++)
+        {
+            for (int i = 0; i < 3; i++)
+            {
                 if (pWnd == m_pImage[i])
                 {
                     m_iActiveIndex = m_firstSkin + i;
                     OnBtnOK();
                 }
+            }
+        }
         break;
     case WINDOW_FOCUS_RECEIVED:
-        /*
-                    if (pWnd == m_pButtons[0])
-                    {
-                        m_pAnims[0]->Rewind(0);
-                        m_pAnims[0]->Play();
-                    }
-                    else if (pWnd == m_pButtons[1])
-                    {
-                        m_pAnims[1]->Rewind(0);
-                        m_pAnims[1]->Play();
-                    }
-        */
+
+        //---m4d_skins
+        if (pWnd == m_pButtons[0])
+        {
+            m_pAnims[0]->Rewind(0);
+            m_pAnims[0]->Play();
+        }
+        else if (pWnd == m_pButtons[1])
+        {
+            m_pAnims[1]->Rewind(0);
+            m_pAnims[1]->Play();
+        }
+
         break;
     }
 }
 
 void CUISkinSelectorWnd::OnBtnCancel()
 {
-    HideDialog();
     game_cl_mp* mp = smart_cast<game_cl_mp*>(&(Game()));
-    mp->OnSkinMenu_Cancel();
+    //mp->OnSkinMenu_Cancel();
+    mp->OnSkinMenuBack();
+    HideDialog();
 }
 
 void CUISkinSelectorWnd::OnBtnOK()
@@ -298,7 +315,7 @@ void CUISkinSelectorWnd::OnKeyLeft()
 
 void CUISkinSelectorWnd::OnKeyRight()
 {
-    if (m_firstSkin + 6 < (int)m_skins.size())
+    if (m_firstSkin + 3 < (int)m_skins.size())
     {
         m_firstSkin++;
         UpdateSkins();
@@ -330,10 +347,10 @@ void CUISkinSelectorWnd::SetCurSkin(int skin)
 
     m_iActiveIndex = skin;
 
-    if (m_iActiveIndex != -1 && (m_iActiveIndex < m_firstSkin || m_iActiveIndex > m_firstSkin + 5))
+    if (m_iActiveIndex != -1 && (m_iActiveIndex < m_firstSkin || m_iActiveIndex > m_firstSkin + 2))
     {
-        if (m_iActiveIndex > (int)m_skins.size() - 6)
-            m_firstSkin = (int)m_skins.size() - 6;
+        if (m_iActiveIndex > (int)m_skins.size() - 3)
+            m_firstSkin = (int)m_skins.size() - 3;
         else
             m_firstSkin = m_iActiveIndex;
     }

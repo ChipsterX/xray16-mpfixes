@@ -9,10 +9,10 @@
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
 
-#include "multi_edit.hpp"
-#include "ExtBtn.hpp"
-#include "mxPlacemnt.hpp"
-#include "multi_color.hpp"
+#include "../sdk/components/AlexMX/multi_edit.hpp"
+#include "../sdk/components/AlexMX/ExtBtn.hpp"
+#include "../sdk/components/AlexMX/mxPlacemnt.hpp"
+#include "../sdk/components/AlexMX/multi_color.hpp"
 #include "ESceneCustomMTools.h"
 // refs
 struct SDOClusterDef;

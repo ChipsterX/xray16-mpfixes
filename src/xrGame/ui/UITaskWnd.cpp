@@ -56,7 +56,7 @@ void CUITaskWnd::Init()
     m_bQuestNpcsEnabled = true;
 
     m_pMapWnd = new CUIMapWnd();
-    m_pMapWnd->SetAutoDelete(false);
+    m_pMapWnd->SetAutoDelete(false); 
     m_pMapWnd->hint_wnd = hint_wnd;
     m_pMapWnd->Init(PDA_TASK_XML, "map_wnd");
     AttachChild(m_pMapWnd);
@@ -384,7 +384,10 @@ void CUITaskItem::Update()
     }
 }
 
-void CUITaskItem::OnMouseScroll(float iDirection) {}
+void CUITaskItem::OnMouseScroll(float iDirection) 
+{
+
+}
 bool CUITaskItem::OnMouseAction(float x, float y, EUIMessages mouse_action)
 {
     if (inherited::OnMouseAction(x, y, mouse_action))

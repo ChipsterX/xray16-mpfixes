@@ -54,6 +54,7 @@ void CObjectHandler::reinit(CAI_Stalker* object)
 void CObjectHandler::reload(LPCSTR section) { inherited::reload(section); }
 BOOL CObjectHandler::net_Spawn(CSE_Abstract* DC)
 {
+    //---m4d_SPAWN
     if (!inherited::net_Spawn(DC))
         return (FALSE);
 
