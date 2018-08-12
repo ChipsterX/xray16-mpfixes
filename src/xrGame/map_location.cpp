@@ -357,10 +357,11 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp)
             return;
         }
 
-        if (b_alife && m_owner_se_object->m_flags.test(CSE_ALifeObject::flVisibleForMap) == FALSE)
+        /*  if (b_alife && m_owner_se_object->m_flags.test(CSE_ALifeObject::flVisibleForMap) == FALSE)
         {
             return;
         }
+        Doesn't work for some reason yet. */
 
         if (IsGameTypeSingle()) //---m4d_map ???
         {

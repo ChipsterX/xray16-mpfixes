@@ -16,6 +16,7 @@
 #include "game_cl_base_weapon_usage_statistic.h"
 #include "xrNetServer/NET_Messages.h"
 #include "clsid_game.h"
+#include "alife_simulator.h"
 
 //#define DELAYED_ROUND_TIME	7000
 #include "ui\UIBuyWndShared.h"
@@ -71,6 +72,8 @@ game_sv_Deathmatch::game_sv_Deathmatch()
     m_dwWarmUp_CurTime = 0;
     m_bInWarmUp = false;
     //-------------------------------
+
+    m_alife_simulator = NULL;  //Initialize Alife Simulator
 };
 
 game_sv_Deathmatch::~game_sv_Deathmatch()
@@ -92,6 +95,8 @@ game_sv_Deathmatch::~game_sv_Deathmatch()
         };
         m_AnomalyIDSetsList.clear();
     };
+
+    delete_data(m_alife_simulator); //Deleting data
 };
 
 void game_sv_Deathmatch::Create(shared_str& options)
@@ -101,6 +106,8 @@ void game_sv_Deathmatch::Create(shared_str& options)
 
     LoadTeams();
     m_not_free_ammo_str = READ_IF_EXISTS(pSettings, r_string, "deathmatch_gamedata", "not_free_ammo", "");
+
+    m_alife_simulator = new CALifeSimulator(m_server, &options);
 
     switch_Phase(GAME_PHASE_PENDING);
 

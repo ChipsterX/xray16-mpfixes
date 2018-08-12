@@ -22,7 +22,7 @@ void game_sv_Single::Create(shared_str& options)
 {
     inherited::Create(options);
     if (strstr(*options, "/alife"))
-        m_alife_simulator = new CALifeSimulator(&server(), &options);
+        m_alife_simulator = new CALifeSimulator(m_server, &options);
     switch_Phase(GAME_PHASE_INPROGRESS);
 }
 

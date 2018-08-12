@@ -8,10 +8,6 @@
 
 class CItemMgr;
 class xrClientData;
-//---m4d_alife
-class CALifeSimulator;
-class xrServer;
-
 #define VOTE_LENGTH_TIME 1
 #define VOTE_QUOTA 0.51f
 
@@ -37,8 +33,6 @@ class game_sv_mp : public game_sv_GameState
     typedef game_sv_GameState inherited;
 
 protected:
-    //----m4d_alife
-    CALifeSimulator * m_alife_simulator;
     //список трупов для удаления
     using CORPSE_LIST = xr_deque<u16>;
 
@@ -119,11 +113,11 @@ public:
     virtual void Create(shared_str& options);
     virtual void OnPlayerConnect(ClientID id_who);
     virtual void OnPlayerDisconnect(ClientID id_who, LPSTR Name, u16 GameID);
-    virtual BOOL OnTouch(u16 eid_who, u16 eid_target, BOOL bForced = FALSE); //---m4d_alife
-    //{
-    //    return true;
-    //}; // TRUE=allow ownership, FALSE=denied
-    virtual void OnDetach(u16 eid_who, u16 eid_target); //{}; -----m4d_alife
+    virtual BOOL OnTouch(u16 eid_who, u16 eid_target, BOOL bForced = FALSE)
+    {
+        return true;
+    }; // TRUE=allow ownership, FALSE=denied
+    virtual void OnDetach(u16 eid_who, u16 eid_target){};
     virtual void OnPlayerKillPlayer(game_PlayerState* ps_killer, game_PlayerState* ps_killed, KILL_TYPE KillType,
         SPECIAL_KILL_TYPE SpecialKillType, CSE_Abstract* pWeaponA){};
     virtual void OnPlayerKilled(NET_Packet P);
@@ -224,45 +218,4 @@ public:
     virtual void Player_ExperienceFin(game_PlayerState* ps);
     virtual void Player_AddMoney(game_PlayerState* ps, s32 MoneyAmount);
     void SpawnPlayer(ClientID id, LPCSTR N);
-
-    //---m4d_alife
-    virtual void OnCreate(u16 id_who);
-
-    //test
-    virtual LPCSTR type_name() const { return "single"; };
-
-    virtual ALife::_TIME_ID GetStartGameTime();
-    virtual ALife::_TIME_ID GetGameTime();
-    virtual float GetGameTimeFactor();
-    virtual void SetGameTimeFactor(const float fTimeFactor);
-
-    virtual ALife::_TIME_ID GetEnvironmentGameTime();
-    virtual float GetEnvironmentGameTimeFactor();
-    virtual void SetEnvironmentGameTimeFactor(const float fTimeFactor);
-
-    virtual void switch_distance(NET_Packet& net_packet, ClientID sender);
-   // virtual BOOL CanHaveFriendlyFire() { return FALSE; }
-    virtual void teleport_object(NET_Packet& packet, u16 id);
-    virtual void add_restriction(NET_Packet& packet, u16 id);
-    virtual void remove_restriction(NET_Packet& packet, u16 id);
-    virtual void remove_all_restrictions(NET_Packet& packet, u16 id);
-    virtual bool custom_sls_default() { return !!m_alife_simulator; };
-    virtual void sls_default();
-    virtual shared_str level_name(const shared_str& server_options) const;
-    virtual void on_death(CSE_Abstract* e_dest, CSE_Abstract* e_src);
-    virtual bool change_level(NET_Packet& net_packet, ClientID sender);
-
-    void restart_simulator(LPCSTR saved_game_name);
-
-    IC xrServer& server() const
-    {
-        VERIFY(m_server);
-        return (*m_server);
-    }
-
-    IC CALifeSimulator& alife() const
-    {
-        VERIFY(m_alife_simulator);
-        return (*m_alife_simulator);
-    }
 };

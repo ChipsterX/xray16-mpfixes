@@ -70,12 +70,12 @@ void CEntity::Die(IGameObject* who)
     set_ready_to_save();
     SetfHealth(-1.f);
 
-    if (IsGameTypeSingle())
+    if (!IsGameTypeSingle()) //Disable Singleplayer check
     {
         VERIFY(m_registered_member);
     }
     m_registered_member = false;
-    if (IsGameTypeSingle())
+    if (!IsGameTypeSingle()) //Disable Singleplayer check
         Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this);
 }
 
@@ -206,7 +206,7 @@ BOOL CEntity::net_Spawn(CSE_Abstract* DC)
     }
 
     //-----m4d_ALIFE SPAWN (и вообще надо глянуть этот класс)
-    if (g_Alive() && IsGameTypeSingle())
+    if (g_Alive() && !IsGameTypeSingle()) //Disable Singleplayer check
     {
         m_registered_member = true;
         Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).register_member(this);
@@ -244,7 +244,7 @@ void CEntity::net_Destroy()
     if (m_registered_member)
     {
         m_registered_member = false;
-        if (IsGameTypeSingle())
+        if (!IsGameTypeSingle()) //Disable Singleplayer check
             Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this);
     }
 
@@ -369,7 +369,7 @@ void CEntity::ChangeTeam(int team, int squad, int group)
 
     VERIFY2(g_Alive(), "Try to change team of a dead object");
 
-    if (IsGameTypeSingle())
+    if (!IsGameTypeSingle()) //disable Sinbgleplayer check (?)
     {
         VERIFY(m_registered_member);
     }

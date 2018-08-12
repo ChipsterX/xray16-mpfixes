@@ -447,7 +447,7 @@ void CLevel::OnFrame()
         else
             MapManager().Update();
         //----m4d_pda ???
-        if (IsGameTypeSingle() && Device.dwPrecacheFrame == 0)
+        if (!IsGameTypeSingle() && Device.dwPrecacheFrame == 0) //Disable Singleplayer check
         {
             // XXX nitrocaster: was enabled in x-ray 1.5; to be restored or removed
             // if (g_mt_config.test(mtMap))
